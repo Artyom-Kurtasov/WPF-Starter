@@ -17,7 +17,8 @@ namespace WPF_Starter.ViewModels
 {
     public class Commands
     {
-         private ExportToExcel _exportToExcel;
+        private readonly AppDbContext _appDbContext;
+        private ExportToExcel _exportToExcel;
         private readonly ToExcel _ToExcel;
         private readonly States _states;
         private readonly Search _search;
@@ -26,12 +27,13 @@ namespace WPF_Starter.ViewModels
         public ICommand ExportToExcelFile { get; }
         public ICommand ShowExportForm { get; }
 
-        public Commands(DataGridManager dataGridManager, ToExcel ToExcel, States states, Search search)
+        public Commands(DataGridManager dataGridManager, ToExcel ToExcel, States states, Search search, AppDbContext appDbContext)
         {
            
             ExportToExcelFile = new RelayCommands(ExportExcelExecute, CanExportExcelExecute);
             ShowExportForm = new RelayCommands(ShowExportFormExecute, CanShowExportForm);
 
+            _appDbContext = appDbContext;
             _gridManager = dataGridManager;
             _ToExcel = ToExcel;
             _states = states;
@@ -41,14 +43,12 @@ namespace WPF_Starter.ViewModels
         private void ShowExportFormExecute()
         {
             _exportToExcel = App.ServiceProvider.GetRequiredService<ExportToExcel>();
-            _exportToExcel.DataContext = this;
+            _exportToExcel.DataContext = new MainWindowViewModel(this, _states);
             _exportToExcel.Show();
         }
         private void ExportExcelExecute()
         {
-            _search.GetSearchText(_exportToExcel.searchBox.Text);
-            _search.GetFilteredList();
-            _ToExcel.ConvertToExcel();
+            _ToExcel.FillExcelFile(_appDbContext);
         }
 
         private bool CanShowExportForm() => true;

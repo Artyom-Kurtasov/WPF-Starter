@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Win32;
+using WPF_Starter.DataBase;
 using WPF_Starter.Models;
 using WPF_Starter.View;
 using WPF_Starter.ViewModels;
@@ -13,20 +15,23 @@ namespace WPF_Starter.Config
     {
         public void conf(IServiceCollection services)
         {
-            services.AddScoped<People>();
-            services.AddScoped<States>();
-            services.AddScoped<CsvLoader>();
-            services.AddScoped<DataBaseLoader>();
-            services.AddScoped<ToExcel>();
-            services.AddScoped<Search>();
-
-            services.AddTransient<SaveFileDialog>();
-            services.AddScoped<DataGridManager>();
+            services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer("Server=NINJA2077\\MSSQLCSV;Database=Person;Trusted_Connection=True;TrustServerCertificate=True;"));
+            services.AddSingleton<People>();
+            services.AddSingleton<States>();
+            services.AddSingleton<CsvLoader>();
+            services.AddSingleton<DataBaseLoader>();
+            services.AddSingleton<ToExcel>();
+            services.AddSingleton<Search>();
+            services.AddSingleton<DataGridManager>();
             services.AddSingleton<Commands>();
-            services.AddScoped<RelayCommands>();
 
+            services.AddTransient<RelayCommands>();
+            services.AddTransient<SaveFileDialog>();
             services.AddTransient<MainWindow>();
             services.AddTransient<ExportToExcel>();
+            services.AddTransient<MainWindowInitialization>();
+            services.AddTransient<StartupDataLoader>();
 
         }
     }

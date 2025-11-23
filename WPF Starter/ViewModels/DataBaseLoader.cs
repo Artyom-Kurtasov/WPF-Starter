@@ -18,7 +18,7 @@ namespace WPF_Starter.ViewModels
         }
         private void SetListOfData()
         {
-            var lines = File.ReadAllLines(_states.File);
+            var lines = File.ReadAllLines(_states.CsvFileName);
 
             foreach (var line in lines)
             {
@@ -33,7 +33,7 @@ namespace WPF_Starter.ViewModels
                     System.Globalization.DateTimeStyles.None,
                     out var date))
                 {
-                    continue; // пропускаем строку с неправильной датой
+                    continue; 
                 }
 
                 People person = new()
@@ -50,10 +50,8 @@ namespace WPF_Starter.ViewModels
             }
         }
 
-        private void AddToDataBase()
+        private void AddToDataBase(AppDbContext dataBase)
         {
-            using (AppDbContext dataBase = new())
-            {
                 var deletable = dataBase.Person.Where(u => u.Id != null);
 
                 dataBase.Person.RemoveRange(deletable);
@@ -63,13 +61,12 @@ namespace WPF_Starter.ViewModels
                 }
                 dataBase.SaveChanges();
             }
-        }
-        public void LoadDataBase()
+        public void LoadDataBase(AppDbContext dataBase)
         {
             try
             {
                 SetListOfData();
-                AddToDataBase();
+                AddToDataBase(dataBase);
             }
             catch (Exception ex)
             {

@@ -22,7 +22,7 @@ namespace WPF_Starter.ViewModels
         }
         private void GetFileName()
         {
-            _states.File = _openFileDialog.ShowDialog() == true ? _openFileDialog.FileName : null;
+            _states.CsvFileName = _openFileDialog.ShowDialog() == true ? _openFileDialog.FileName : null;
         }
 
         private void SetDialogConfiguration()

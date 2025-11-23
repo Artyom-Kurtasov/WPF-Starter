@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
@@ -9,6 +10,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using WPF_Starter.Models;
 using WPF_Starter.ViewModels;
 
 namespace WPF_Starter.View
@@ -18,12 +20,10 @@ namespace WPF_Starter.View
     /// </summary>
     public partial class ExportToExcel : Window
     {
-        public TextBox searchBox {  get; private set; }
         public ExportToExcel()
         {
             InitializeComponent();
 
-            searchBox = SearchTextBox;
         }
 
 

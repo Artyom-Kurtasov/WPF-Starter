@@ -5,24 +5,25 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPF_Starter.View"
         mc:Ignorable="d"
-        Title="ExportToExcel" Height="450" Width="800">
+        Title="ExportToExcel" Height="400" Width="250">
     <Grid>
+
         <TextBox 
-            HorizontalAlignment="Left" 
-            Margin="211,199,0,0" 
+            Margin="25,31,25,0" 
             TextWrapping="Wrap" 
-            VerticalAlignment="Top" 
-            Width="312" 
             UndoLimit="400"
-            x:Name="SearchTextBox"/>
-        <TextBlock HorizontalAlignment="Left" Margin="320,154,0,0" TextWrapping="Wrap" Text="Введите" VerticalAlignment="Top"/>
-        <Button Content="Button" 
+            x:Name="DateTextBox"
+            Height="22"
+            VerticalAlignment="Top"
+            Text="{Binding States.DateBoxText, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBlock HorizontalAlignment="Left" Margin="25,10,0,0" TextWrapping="Wrap" Text="Date" VerticalAlignment="Top" Height="16" Width="44"/>
+        <Button Content="Export" 
                 HorizontalAlignment="Left" 
-                Margin="554,318,0,0"
+                Margin="87,326,0,0"
                 VerticalAlignment="Top"
-                Width="77" 
+                Width="76" 
                 RenderTransformOrigin="0.5,0.5"
-                Command="{Binding ExportToExcelFile}">
+                Command="{Binding Commands.ExportToExcelFile}" Height="20">
             <Button.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
@@ -32,5 +33,41 @@
                 </TransformGroup>
             </Button.RenderTransform>
         </Button>
+        <TextBox 
+            Margin="25,79,25,0" 
+            TextWrapping="Wrap" 
+            UndoLimit="400"
+            x:Name="NameTextBox" Height="22" VerticalAlignment="Top"
+            Text="{Binding States.NameBoxText, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBox 
+            Margin="25,270,25,0" 
+            TextWrapping="Wrap" 
+            UndoLimit="400"
+            x:Name="CountryTextBox" Height="22" VerticalAlignment="Top"
+            Text="{Binding States.CountryBoxText, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBox 
+            Margin="25,221,25,0" 
+            TextWrapping="Wrap" 
+            UndoLimit="400"
+            x:Name="CityTextBox" Height="22" VerticalAlignment="Top"
+            Text="{Binding States.CityBoxText, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBox 
+            Margin="25,172,25,0" 
+            TextWrapping="Wrap" 
+            UndoLimit="400"
+            x:Name="PatronymicTextBox" Height="22" VerticalAlignment="Top"
+            Text="{Binding States.PatronymicBoxText, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBox 
+            Margin="25,128,25,0" 
+            TextWrapping="Wrap" 
+            UndoLimit="400"
+            x:Name="SurnameTextBox" Height="22" VerticalAlignment="Top"
+            Text="{Binding States.SurnameBoxText, UpdateSourceTrigger=PropertyChanged}"/>
+        
+        <TextBlock HorizontalAlignment="Left" Margin="25,58,0,0" TextWrapping="Wrap" Text="Name" VerticalAlignment="Top" Height="16" Width="32"/>
+        <TextBlock HorizontalAlignment="Left" Margin="25,107,0,0" TextWrapping="Wrap" Text="Surname" VerticalAlignment="Top" Height="16" Width="47"/>
+        <TextBlock HorizontalAlignment="Left" Margin="25,156,0,0" TextWrapping="Wrap" Text="Patronymic" VerticalAlignment="Top" Height="16" Width="59"/>
+        <TextBlock HorizontalAlignment="Left" Margin="25,200,0,0" TextWrapping="Wrap" Text="City" VerticalAlignment="Top" Height="16" Width="30"/>
+        <TextBlock HorizontalAlignment="Left" Margin="25,249,0,0" TextWrapping="Wrap" Text="Country" VerticalAlignment="Top" Height="16" Width="47"/>
     </Grid>
 </Window>
