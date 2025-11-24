@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using WPF_Starter.DataBase;
 using WPF_Starter.Models;
 
 namespace WPF_Starter.ViewModels

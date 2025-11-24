@@ -7,19 +7,10 @@
         mc:Ignorable="d"
         Title="ExportToExcel" Height="400" Width="250">
     <Grid>
-
-        <TextBox 
-            Margin="25,31,25,0" 
-            TextWrapping="Wrap" 
-            UndoLimit="400"
-            x:Name="DateTextBox"
-            Height="22"
-            VerticalAlignment="Top"
-            Text="{Binding States.DateBoxText, UpdateSourceTrigger=PropertyChanged}"/>
         <TextBlock HorizontalAlignment="Left" Margin="25,10,0,0" TextWrapping="Wrap" Text="Date" VerticalAlignment="Top" Height="16" Width="44"/>
         <Button Content="Export" 
                 HorizontalAlignment="Left" 
-                Margin="87,326,0,0"
+                Margin="164,326,0,0"
                 VerticalAlignment="Top"
                 Width="76" 
                 RenderTransformOrigin="0.5,0.5"
@@ -38,36 +29,50 @@
             TextWrapping="Wrap" 
             UndoLimit="400"
             x:Name="NameTextBox" Height="22" VerticalAlignment="Top"
-            Text="{Binding States.NameBoxText, UpdateSourceTrigger=PropertyChanged}"/>
+            Text="{Binding States.NameBoxText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
         <TextBox 
             Margin="25,270,25,0" 
             TextWrapping="Wrap" 
             UndoLimit="400"
             x:Name="CountryTextBox" Height="22" VerticalAlignment="Top"
-            Text="{Binding States.CountryBoxText, UpdateSourceTrigger=PropertyChanged}"/>
+            Text="{Binding States.CountryBoxText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
         <TextBox 
             Margin="25,221,25,0" 
             TextWrapping="Wrap" 
             UndoLimit="400"
             x:Name="CityTextBox" Height="22" VerticalAlignment="Top"
-            Text="{Binding States.CityBoxText, UpdateSourceTrigger=PropertyChanged}"/>
+            Text="{Binding States.CityBoxText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
         <TextBox 
             Margin="25,172,25,0" 
             TextWrapping="Wrap" 
             UndoLimit="400"
             x:Name="PatronymicTextBox" Height="22" VerticalAlignment="Top"
-            Text="{Binding States.PatronymicBoxText, UpdateSourceTrigger=PropertyChanged}"/>
+            Text="{Binding States.PatronymicBoxText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
         <TextBox 
             Margin="25,128,25,0" 
             TextWrapping="Wrap" 
             UndoLimit="400"
             x:Name="SurnameTextBox" Height="22" VerticalAlignment="Top"
-            Text="{Binding States.SurnameBoxText, UpdateSourceTrigger=PropertyChanged}"/>
-        
+            Text="{Binding States.SurnameBoxText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+
         <TextBlock HorizontalAlignment="Left" Margin="25,58,0,0" TextWrapping="Wrap" Text="Name" VerticalAlignment="Top" Height="16" Width="32"/>
         <TextBlock HorizontalAlignment="Left" Margin="25,107,0,0" TextWrapping="Wrap" Text="Surname" VerticalAlignment="Top" Height="16" Width="47"/>
         <TextBlock HorizontalAlignment="Left" Margin="25,156,0,0" TextWrapping="Wrap" Text="Patronymic" VerticalAlignment="Top" Height="16" Width="59"/>
         <TextBlock HorizontalAlignment="Left" Margin="25,200,0,0" TextWrapping="Wrap" Text="City" VerticalAlignment="Top" Height="16" Width="30"/>
         <TextBlock HorizontalAlignment="Left" Margin="25,249,0,0" TextWrapping="Wrap" Text="Country" VerticalAlignment="Top" Height="16" Width="47"/>
+        <DatePicker HorizontalAlignment="Center"
+                    Margin="0,34,0,0"
+                    VerticalAlignment="Top"
+                    Width="200"
+                    SelectedDate = "{Binding States.DateBoxText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+
+            <DatePicker.Resources>
+                <Style TargetType="DatePickerTextBox">
+                    <Setter Property="IsReadOnly" Value="True"/>
+                </Style>
+            </DatePicker.Resources>
+        </DatePicker>
+        <Button Content="Button" HorizontalAlignment="Left" Margin="33,326,0,0" VerticalAlignment="Top"
+                Command="{Binding Commands.ExportToXmlFile}"/>
     </Grid>
 </Window>

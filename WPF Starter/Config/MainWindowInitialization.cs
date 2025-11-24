@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
+using WPF_Starter.DataBase;
 using WPF_Starter.Models;
 using WPF_Starter.ViewModels;
 

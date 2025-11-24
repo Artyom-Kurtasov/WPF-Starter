@@ -9,6 +9,7 @@ using WPF_Starter.View;
 using System.Data.SqlClient;
 using System.Windows;
 using DocumentFormat.OpenXml.Drawing.Diagrams;
+using System.Globalization;
 
 namespace WPF_Starter.ViewModels
 {
@@ -28,11 +29,10 @@ namespace WPF_Starter.ViewModels
             var cityFilter = _states.CityBoxText?.Trim().ToLower();
             var countryFilter = _states.CountryBoxText?.Trim().ToLower();
 
-            DateOnly parsedDate;
-            bool hasDate = DateOnly.TryParseExact(_states.DateBoxText, "dd.MM.yyyy", out parsedDate);
+            DateTime? parsedDate = _states.DateBoxText;
 
             return dataBase.Person.Where(u =>
-                (!hasDate || u.Date == parsedDate) &&
+                (_states.DateBoxText == null ||u.Date == parsedDate) &&
                 (string.IsNullOrEmpty(nameFilter) || u.Name.ToLower().Contains(nameFilter)) &&
                 (string.IsNullOrEmpty(surnameFilter) || u.Surname.ToLower().Contains(surnameFilter)) &&
                 (string.IsNullOrEmpty(patronymicFilter) || u.Patronymic.ToLower().Contains(patronymicFilter)) &&

@@ -9,7 +9,6 @@ namespace WPF_Starter.DataBase
             : base(options)
         {
         }
-
         public DbSet<People> Person { get; set; }
     }
 }

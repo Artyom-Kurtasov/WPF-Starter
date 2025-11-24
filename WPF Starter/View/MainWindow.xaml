@@ -20,7 +20,21 @@
         </Menu>
 
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
-            <DataGrid x:Name="peoplesGrid" AutoGenerateColumns="True" />
+            <DataGrid x:Name="peoplesGrid"
+          AutoGenerateColumns="False">
+
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Date"
+                            Binding="{Binding Date, StringFormat={}{0:dd.MM.yyyy}}" />
+                    <DataGridTextColumn Header="Name" Binding="{Binding Name}" />
+                    <DataGridTextColumn Header="Surname" Binding="{Binding Surname}" />
+                    <DataGridTextColumn Header="Patronymic" Binding="{Binding Patronymic}" />
+                    <DataGridTextColumn Header="City" Binding="{Binding City}" />
+                    <DataGridTextColumn Header="Country" Binding="{Binding Country}" />
+                </DataGrid.Columns>
+            </DataGrid>
+
+
         </ScrollViewer>
     </Grid>
 </Window>

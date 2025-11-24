@@ -10,9 +10,7 @@ namespace WPF_Starter.ViewModels
     {
         public void SetDataGrid(DataGrid _dataGrid, AppDbContext dataBase)
         {
-
-            var lines = dataBase.Person.ToList();
-            _dataGrid.ItemsSource = lines;
+            _dataGrid.ItemsSource = dataBase.Person.ToList();
         }
     }
 }

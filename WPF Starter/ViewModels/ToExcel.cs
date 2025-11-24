@@ -77,7 +77,7 @@ namespace WPF_Starter.ViewModels
                 {
                     foreach (var item in batch)
                     {
-                        worksheet.Cell(row, 1).Value = item.Date.ToDateTime(TimeOnly.MinValue);
+                        worksheet.Cell(row, 1).Value = item.Date;
                         worksheet.Cell(row, 1).Style.DateFormat.Format = "dd.MM.yyyy";
                         worksheet.Cell(row, 2).Value = item.Name;
                         worksheet.Cell(row, 3).Value = item.Surname;

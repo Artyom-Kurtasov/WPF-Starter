@@ -21,11 +21,14 @@ namespace WPF_Starter
         {
             base.OnStartup(e);
 
+            var culture = new System.Globalization.CultureInfo("ru-RU");
+            System.Threading.Thread.CurrentThread.CurrentCulture = culture;
+            System.Threading.Thread.CurrentThread.CurrentUICulture = culture;
+
             ServiceCollection services = new();
             var config = new Configure();
             config.conf(services);
             ServiceProvider = services.BuildServiceProvider();
-
 
             var mainWindowInitialization = ServiceProvider.GetRequiredService<MainWindowInitialization>();
             var mainWindow = mainWindowInitialization.Init();

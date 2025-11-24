@@ -17,29 +17,42 @@ namespace WPF_Starter.ViewModels
 {
     public class Commands
     {
+        private readonly ClearFieldsExportForm _clearFieldsExportForm;
         private readonly AppDbContext _appDbContext;
         private ExportToExcel _exportToExcel;
-        private readonly ToExcel _ToExcel;
+        private readonly ToXml _toXml;
+        private readonly ToExcel _toExcel;
         private readonly States _states;
         private readonly Search _search;
 
         private readonly DataGridManager _gridManager;
         public ICommand ExportToExcelFile { get; }
         public ICommand ShowExportForm { get; }
+        public ICommand ExportToXmlFile { get; }
 
-        public Commands(DataGridManager dataGridManager, ToExcel ToExcel, States states, Search search, AppDbContext appDbContext)
+        public Commands(DataGridManager dataGridManager, ToExcel ToExcel, States states, Search search, AppDbContext appDbContext, ClearFieldsExportForm clearFields,
+            ExportToExcel exportToExcel, ToXml toXml)
         {
            
             ExportToExcelFile = new RelayCommands(ExportExcelExecute, CanExportExcelExecute);
             ShowExportForm = new RelayCommands(ShowExportFormExecute, CanShowExportForm);
+            ExportToXmlFile = new RelayCommands(ExportXmlExecute, CanExportXmlExecute);
 
+            _exportToExcel = exportToExcel;
             _appDbContext = appDbContext;
             _gridManager = dataGridManager;
-            _ToExcel = ToExcel;
+            _toExcel = ToExcel;
             _states = states;
             _search = search;
+            _clearFieldsExportForm = clearFields;
+            _toXml = toXml;
         }
 
+        private void ExportXmlExecute()
+        {
+            _toXml.FillXmlFile(_appDbContext);
+            _clearFieldsExportForm.ClearFields();
+        }
         private void ShowExportFormExecute()
         {
             _exportToExcel = App.ServiceProvider.GetRequiredService<ExportToExcel>();
@@ -48,9 +61,11 @@ namespace WPF_Starter.ViewModels
         }
         private void ExportExcelExecute()
         {
-            _ToExcel.FillExcelFile(_appDbContext);
+            _toExcel.FillExcelFile(_appDbContext);
+            _clearFieldsExportForm.ClearFields();
         }
 
+        private bool CanExportXmlExecute() => true;
         private bool CanShowExportForm() => true;
         private bool CanExportExcelExecute() => true;
     }

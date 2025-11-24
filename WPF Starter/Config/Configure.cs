@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using System.Text;
+using System.Xml.Serialization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Win32;
@@ -21,11 +23,13 @@ namespace WPF_Starter.Config
             services.AddSingleton<States>();
             services.AddSingleton<CsvLoader>();
             services.AddSingleton<DataBaseLoader>();
+            services.AddSingleton<ToXml>();
             services.AddSingleton<ToExcel>();
             services.AddSingleton<Search>();
             services.AddSingleton<DataGridManager>();
             services.AddSingleton<Commands>();
 
+            services.AddTransient<ClearFieldsExportForm>();
             services.AddTransient<RelayCommands>();
             services.AddTransient<SaveFileDialog>();
             services.AddTransient<MainWindow>();

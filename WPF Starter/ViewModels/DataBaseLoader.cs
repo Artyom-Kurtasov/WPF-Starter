@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System.IO;
 using System.Security.Cryptography.X509Certificates;
 using WPF_Starter.DataBase;
+using System.Globalization;
 
 namespace WPF_Starter.ViewModels
 {
@@ -27,13 +28,8 @@ namespace WPF_Starter.ViewModels
                 string[] cells = line.Split(';');
                 if (cells.Length < 6) continue;
 
-                if (!DateOnly.TryParseExact(cells[0],
-                    new[] { "dd/MM/yyyy", "d/M/yyyy", "dd.MM.yyyy", "yyyy-MM-dd" },
-                    System.Globalization.CultureInfo.InvariantCulture,
-                    System.Globalization.DateTimeStyles.None,
-                    out var date))
-                {
-                    continue; 
+                if (!DateTime.TryParseExact(cells[0], new[] { "dd.MM.yyyy", "dd/MM/yyyy", "yyyy-MM-dd" }, new CultureInfo("ru-RU"), DateTimeStyles.None, out var date )){
+                    continue;
                 }
 
                 People person = new()
