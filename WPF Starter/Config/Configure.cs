@@ -10,6 +10,7 @@ using WPF_Starter.DataBase;
 using WPF_Starter.Models;
 using WPF_Starter.View;
 using WPF_Starter.ViewModels;
+using WPF_Starter.ViewModels.Commands;
 
 namespace WPF_Starter.Config
 {
@@ -23,17 +24,19 @@ namespace WPF_Starter.Config
             services.AddSingleton<States>();
             services.AddSingleton<CsvLoader>();
             services.AddSingleton<DataBaseLoader>();
-            services.AddSingleton<ToXml>();
-            services.AddSingleton<ToExcel>();
+            services.AddSingleton<ExportToXml>();
+            services.AddSingleton<ExportToExcel>();
             services.AddSingleton<Search>();
             services.AddSingleton<DataGridManager>();
-            services.AddSingleton<Commands>();
+            services.AddSingleton<MainWindowViewModel>();
 
-            services.AddTransient<ClearFieldsExportForm>();
+            services.AddTransient<ExportCommands>();
+            services.AddTransient<ClearCommands>();
+            services.AddTransient<NavigationCommands>();
             services.AddTransient<RelayCommands>();
             services.AddTransient<SaveFileDialog>();
             services.AddTransient<MainWindow>();
-            services.AddTransient<ExportToExcel>();
+            services.AddTransient<Export>();
             services.AddTransient<MainWindowInitialization>();
             services.AddTransient<StartupDataLoader>();
 

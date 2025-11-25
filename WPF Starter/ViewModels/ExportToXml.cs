@@ -9,13 +9,13 @@ using System.Xml.Linq;
 
 namespace WPF_Starter.ViewModels
 {
-    public class ToXml
+    public class ExportToXml
     {
         private readonly Search _search;
         private readonly States _states;
         private readonly SaveFileDialog _saveFileDialog = new SaveFileDialog();
 
-        public ToXml(States states, Search search)
+        public ExportToXml(States states, Search search)
         {
             _search = search;
             _states = states;

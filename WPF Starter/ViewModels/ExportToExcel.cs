@@ -11,12 +11,12 @@ using System.Windows;
 
 namespace WPF_Starter.ViewModels
 {
-    public class ToExcel
+    public class ExportToExcel
     {
         private readonly Search _search;
         private readonly States _states;
         private readonly SaveFileDialog _saveFileDialog = new SaveFileDialog();
-        public ToExcel(States states, Search search, AppDbContext appDbContext)
+        public ExportToExcel(States states, Search search, AppDbContext appDbContext)
         {
             _states = states;
             _search = search;

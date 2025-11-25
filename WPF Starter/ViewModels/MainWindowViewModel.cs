@@ -4,16 +4,21 @@ using System.Collections.Generic;
 using System.Text;
 using WPF_Starter.DataBase;
 using WPF_Starter.Models;
+using WPF_Starter.ViewModels.Commands;
 
 namespace WPF_Starter.ViewModels
 {
     public class MainWindowViewModel
     {
-        public Commands Commands { get; }
+        public ClearCommands ClearCommands { get; }
+        public ExportCommands ExportCommands { get; }
+        public NavigationCommands NavigationCommands { get; }
         public States States { get; }
-        public MainWindowViewModel(Commands commands, States states)
+        public MainWindowViewModel(States states, ClearCommands clearCommands, ExportCommands exportCommands, NavigationCommands navigationCommands)
         {
-            Commands = commands;
+            ClearCommands = clearCommands;
+            ExportCommands = exportCommands;
+            NavigationCommands = navigationCommands;
             States = states;
         }
     }

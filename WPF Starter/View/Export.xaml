@@ -1,0 +1,128 @@
+﻿<Window x:Class="WPF_Starter.View.Export"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WPF_Starter.View"
+        mc:Ignorable="d"
+        Title="ExportToExcel" Height="400" Width="259"
+        ResizeMode="CanMinimize">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Margin="5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="30"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="Date"/>
+            <DatePicker Grid.Row="1" Grid.Column="0" Height="24"
+                        SelectedDate="{Binding States.DateOfDatepicker, Mode=TwoWay}"/>
+            <Button Grid.Row="1" Grid.Column="1" Content="🗑️"
+                    Command="{Binding ClearCommands.ClearDatePickerCommand}" Height="24"/>
+        </Grid>
+
+        <Grid Grid.Row="1" Margin="5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="30"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="Name"/>
+            <TextBox Grid.Row="1" Grid.Column="0" Height="22"
+                     Text="{Binding States.NameBoxText, Mode=TwoWay}"/>
+            <Button Grid.Row="1" Grid.Column="1" Content="🗑️"
+                    Command="{Binding ClearCommands.ClearNameCommand}"/>
+        </Grid>
+
+        <Grid Grid.Row="2" Margin="5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="30"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="Surname"/>
+            <TextBox Grid.Row="1" Grid.Column="0" Height="22"
+                     Text="{Binding States.SurnameBoxText, Mode=TwoWay}"/>
+            <Button Grid.Row="1" Grid.Column="1" Content="🗑️"
+                    Command="{Binding ClearCommands.ClearSurnameCommand}"/>
+        </Grid>
+
+        <Grid Grid.Row="3" Margin="5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="30"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="Patronymic"/>
+            <TextBox Grid.Row="1" Grid.Column="0" Height="22"
+                     Text="{Binding States.PatronymicBoxText, Mode=TwoWay}"/>
+            <Button Grid.Row="1" Grid.Column="1" Content="🗑️"
+                    Command="{Binding ClearCommands.ClearPatronymicCommand}"/>
+        </Grid>
+
+        <Grid Grid.Row="4" Margin="5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="30"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="City"/>
+            <TextBox Grid.Row="1" Grid.Column="0" Height="22"
+                     Text="{Binding States.CityBoxText, Mode=TwoWay}"/>
+            <Button Grid.Row="1" Grid.Column="1" Content="🗑️"
+                    Command="{Binding ClearCommands.ClearCityCommand}"/>
+        </Grid>
+
+        <Grid Grid.Row="5" Margin="5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="30"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="Country"/>
+            <TextBox Grid.Row="1" Grid.Column="0" Height="22"
+                     Text="{Binding States.CountryBoxText, Mode=TwoWay}"/>
+            <Button Grid.Row="1" Grid.Column="1" Content="🗑️"
+                    Command="{Binding ClearCommands.ClearCountryCommand}"/>
+        </Grid>
+
+        <StackPanel Grid.Row="6" Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
+            <Button Content="Export to Excel" Command="{Binding ExportCommands.ExportToExcelFile}" Margin="5"/>
+            <Button Content="Export to Xml" Command="{Binding ExportCommands.ExportToXmlFile}" Margin="5"/>
+        </StackPanel>
+    </Grid>
+</Window>

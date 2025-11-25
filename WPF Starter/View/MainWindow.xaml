@@ -14,7 +14,7 @@
 
         <Menu Grid.Row="0">
             <MenuItem Header="Export">
-                <MenuItem Header="Export to excel" Command="{Binding Commands.ShowExportForm}"/>
+                <MenuItem Header="Export to excel" Command="{Binding NavigationCommands.ShowExportForm}"/>
                 <MenuItem Header="Export to xml"/>
             </MenuItem>
         </Menu>

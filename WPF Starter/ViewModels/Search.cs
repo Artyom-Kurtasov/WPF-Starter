@@ -29,10 +29,10 @@ namespace WPF_Starter.ViewModels
             var cityFilter = _states.CityBoxText?.Trim().ToLower();
             var countryFilter = _states.CountryBoxText?.Trim().ToLower();
 
-            DateTime? parsedDate = _states.DateBoxText;
+            DateTime? parsedDate = _states.DateOfDatepicker;
 
             return dataBase.Person.Where(u =>
-                (_states.DateBoxText == null ||u.Date == parsedDate) &&
+                (_states.DateOfDatepicker == null ||u.Date == parsedDate) &&
                 (string.IsNullOrEmpty(nameFilter) || u.Name.ToLower().Contains(nameFilter)) &&
                 (string.IsNullOrEmpty(surnameFilter) || u.Surname.ToLower().Contains(surnameFilter)) &&
                 (string.IsNullOrEmpty(patronymicFilter) || u.Patronymic.ToLower().Contains(patronymicFilter)) &&

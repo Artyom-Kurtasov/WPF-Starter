@@ -18,14 +18,12 @@ namespace WPF_Starter.View
     /// <summary>
     /// Логика взаимодействия для ExportToExcel.xaml
     /// </summary>
-    public partial class ExportToExcel : Window
+    public partial class Export : Window
     {
-        public ExportToExcel()
+        public Export()
         {
             InitializeComponent();
 
         }
-
-
     }
 }

@@ -11,7 +11,7 @@ namespace WPF_Starter.Models
 {
     public class States : INotifyPropertyChanged
     {
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
         public void OnPropertyChanged([CallerMemberName] string propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
         public LinkedList<People> peoples = new();
@@ -19,7 +19,7 @@ namespace WPF_Starter.Models
         public string? CsvFileName { get; set; }
         public string? XmlFileName { get; set; }
         private DateTime? _dateBoxText;
-        public DateTime? DateBoxText
+        public DateTime? DateOfDatepicker
         {
             get => _dateBoxText;
             set
