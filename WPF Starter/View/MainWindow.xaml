@@ -10,31 +10,35 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <Menu Grid.Row="0">
-            <MenuItem Header="Export">
-                <MenuItem Header="Export to excel" Command="{Binding NavigationCommands.ShowExportForm}"/>
-                <MenuItem Header="Export to xml"/>
-            </MenuItem>
+            <MenuItem Header="Export" Command="{Binding NavigationCommands.ShowExportForm}" />
         </Menu>
 
-        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
-            <DataGrid x:Name="peoplesGrid"
-          AutoGenerateColumns="False">
+        <DataGrid x:Name="peoplesGrid"
+              Grid.Row="1"
+              AutoGenerateColumns="False"
+              EnableRowVirtualization="True"
+              VirtualizingPanel.IsVirtualizing="True"
+              VirtualizingPanel.VirtualizationMode="Recycling">
 
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="Date"
-                            Binding="{Binding Date, StringFormat={}{0:dd.MM.yyyy}}" />
-                    <DataGridTextColumn Header="Name" Binding="{Binding Name}" />
-                    <DataGridTextColumn Header="Surname" Binding="{Binding Surname}" />
-                    <DataGridTextColumn Header="Patronymic" Binding="{Binding Patronymic}" />
-                    <DataGridTextColumn Header="City" Binding="{Binding City}" />
-                    <DataGridTextColumn Header="Country" Binding="{Binding Country}" />
-                </DataGrid.Columns>
-            </DataGrid>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Date"
+                                Binding="{Binding Date, StringFormat={}{0:dd.MM.yyyy}}" />
+                <DataGridTextColumn Header="Name" Binding="{Binding Name}" />
+                <DataGridTextColumn Header="Surname" Binding="{Binding Surname}" />
+                <DataGridTextColumn Header="Patronymic" Binding="{Binding Patronymic}" />
+                <DataGridTextColumn Header="City" Binding="{Binding City}" />
+                <DataGridTextColumn Header="Country" Binding="{Binding Country}" />
+            </DataGrid.Columns>
+        </DataGrid>
 
-
-        </ScrollViewer>
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
+            <Button Content="Назад" Click="PreviousPage_Click" Margin="5"/>
+            <TextBlock x:Name="PageIndicator" VerticalAlignment="Center" Margin="5"/>
+            <Button Content="Вперёд" Click="NextPage_Click" Margin="5"/>
+        </StackPanel>
     </Grid>
 </Window>

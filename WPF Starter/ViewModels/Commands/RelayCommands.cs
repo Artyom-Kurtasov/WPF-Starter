@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Text;
 using System.Windows.Input;
 
-namespace WPF_Starter.ViewModels
+namespace WPF_Starter.ViewModels.Commands
 {
     public class RelayCommands : ICommand
     {

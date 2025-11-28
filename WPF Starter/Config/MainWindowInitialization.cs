@@ -25,9 +25,9 @@ namespace WPF_Starter.Config
             var clearCommands = _serviceProvider.GetRequiredService<ClearCommands>();
             var exportCommands = _serviceProvider.GetRequiredService<ExportCommands>();
             var navigationCommands = _serviceProvider.GetRequiredService<NavigationCommands>();
-            var states = _serviceProvider.GetRequiredService<States>();
+            var peopleFormState = _serviceProvider.GetRequiredService<PeopleFormState>();
 
-            mainWindow.DataContext = new MainWindowViewModel(states, clearCommands, exportCommands, navigationCommands);
+            mainWindow.DataContext = new MainWindowViewModel(peopleFormState, clearCommands, exportCommands, navigationCommands);
 
             return mainWindow;
         }

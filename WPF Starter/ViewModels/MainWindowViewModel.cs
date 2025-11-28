@@ -13,13 +13,13 @@ namespace WPF_Starter.ViewModels
         public ClearCommands ClearCommands { get; }
         public ExportCommands ExportCommands { get; }
         public NavigationCommands NavigationCommands { get; }
-        public States States { get; }
-        public MainWindowViewModel(States states, ClearCommands clearCommands, ExportCommands exportCommands, NavigationCommands navigationCommands)
+        public PeopleFormState PeopleFormState { get; }
+        public MainWindowViewModel(PeopleFormState peopleFormState, ClearCommands clearCommands, ExportCommands exportCommands, NavigationCommands navigationCommands)
         {
             ClearCommands = clearCommands;
             ExportCommands = exportCommands;
             NavigationCommands = navigationCommands;
-            States = states;
+            PeopleFormState = peopleFormState;
         }
     }
 }

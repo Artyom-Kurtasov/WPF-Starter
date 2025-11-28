@@ -3,21 +3,14 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using WPF_Starter.View;
 
 namespace WPF_Starter.Models
 {
-    public class States : INotifyPropertyChanged
+    public class PeopleFormState : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler? PropertyChanged;
         public void OnPropertyChanged([CallerMemberName] string propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-
-        public LinkedList<People> peoples = new();
-        public List<People> AllSov = new();
-        public string? CsvFileName { get; set; }
-        public string? XmlFileName { get; set; }
+        
         private DateTime? _dateBoxText;
         public DateTime? DateOfDatepicker
         {
@@ -83,9 +76,5 @@ namespace WPF_Starter.Models
                 OnPropertyChanged();
             }
         }
-        public int Page { get; set; } = 0;
-        public int PageSize { get; } = 1000;
-        public string? ExcelFileName { get; set; } = null;
-
     }
 }

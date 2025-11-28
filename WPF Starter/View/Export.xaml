@@ -30,7 +30,7 @@
 
             <TextBlock Grid.Row="0" Grid.Column="0" Text="Date"/>
             <DatePicker Grid.Row="1" Grid.Column="0" Height="24"
-                        SelectedDate="{Binding States.DateOfDatepicker, Mode=TwoWay}"/>
+                        SelectedDate="{Binding PeopleFormState.DateOfDatepicker, Mode=TwoWay}"/>
             <Button Grid.Row="1" Grid.Column="1" Content="🗑️"
                     Command="{Binding ClearCommands.ClearDatePickerCommand}" Height="24"/>
         </Grid>
@@ -47,7 +47,7 @@
 
             <TextBlock Grid.Row="0" Grid.Column="0" Text="Name"/>
             <TextBox Grid.Row="1" Grid.Column="0" Height="22"
-                     Text="{Binding States.NameBoxText, Mode=TwoWay}"/>
+                     Text="{Binding PeopleFormState.NameBoxText, Mode=TwoWay}"/>
             <Button Grid.Row="1" Grid.Column="1" Content="🗑️"
                     Command="{Binding ClearCommands.ClearNameCommand}"/>
         </Grid>
@@ -64,7 +64,7 @@
 
             <TextBlock Grid.Row="0" Grid.Column="0" Text="Surname"/>
             <TextBox Grid.Row="1" Grid.Column="0" Height="22"
-                     Text="{Binding States.SurnameBoxText, Mode=TwoWay}"/>
+                     Text="{Binding PeopleFormState.SurnameBoxText, Mode=TwoWay}"/>
             <Button Grid.Row="1" Grid.Column="1" Content="🗑️"
                     Command="{Binding ClearCommands.ClearSurnameCommand}"/>
         </Grid>
@@ -81,7 +81,7 @@
 
             <TextBlock Grid.Row="0" Grid.Column="0" Text="Patronymic"/>
             <TextBox Grid.Row="1" Grid.Column="0" Height="22"
-                     Text="{Binding States.PatronymicBoxText, Mode=TwoWay}"/>
+                     Text="{Binding PeopleFormState.PatronymicBoxText, Mode=TwoWay}"/>
             <Button Grid.Row="1" Grid.Column="1" Content="🗑️"
                     Command="{Binding ClearCommands.ClearPatronymicCommand}"/>
         </Grid>
@@ -98,7 +98,7 @@
 
             <TextBlock Grid.Row="0" Grid.Column="0" Text="City"/>
             <TextBox Grid.Row="1" Grid.Column="0" Height="22"
-                     Text="{Binding States.CityBoxText, Mode=TwoWay}"/>
+                     Text="{Binding PeopleFormState.CityBoxText, Mode=TwoWay}"/>
             <Button Grid.Row="1" Grid.Column="1" Content="🗑️"
                     Command="{Binding ClearCommands.ClearCityCommand}"/>
         </Grid>
@@ -115,7 +115,7 @@
 
             <TextBlock Grid.Row="0" Grid.Column="0" Text="Country"/>
             <TextBox Grid.Row="1" Grid.Column="0" Height="22"
-                     Text="{Binding States.CountryBoxText, Mode=TwoWay}"/>
+                     Text="{Binding PeopleFormState.CountryBoxText, Mode=TwoWay}"/>
             <Button Grid.Row="1" Grid.Column="1" Content="🗑️"
                     Command="{Binding ClearCommands.ClearCountryCommand}"/>
         </Grid>
