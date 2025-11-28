@@ -10,15 +10,13 @@ namespace WPF_Starter.ViewModels.Commands
 {
     public class NavigationCommands
     {
-        private readonly States _states;
         private Export _export;
         public ICommand ShowExportForm { get; }
 
-        public NavigationCommands(Export export, States states)
+        public NavigationCommands(Export export)
         {
             ShowExportForm = new RelayCommands(ShowExportFormExecute, CanShowExportForm);
             _export = export;
-            _states = states;
         }
 
         private void ShowExportFormExecute()

@@ -11,28 +11,28 @@ using System.Windows;
 using DocumentFormat.OpenXml.Drawing.Diagrams;
 using System.Globalization;
 
-namespace WPF_Starter.ViewModels
+namespace WPF_Starter.ViewModels.SearchServices
 {
     public class Search
     {
-        private States _states;
+        private PeopleFormState FormState;
 
-        public Search(States states)
+        public Search(PeopleFormState peopleFormState)
         {
-            _states = states;
+            FormState = peopleFormState;
         }
         public IQueryable<People> SearchPeople(AppDbContext dataBase)
         {
-            var nameFilter = _states.NameBoxText?.Trim().ToLower();
-            var surnameFilter = _states.SurnameBoxText?.Trim().ToLower();
-            var patronymicFilter = _states.PatronymicBoxText?.Trim().ToLower();
-            var cityFilter = _states.CityBoxText?.Trim().ToLower();
-            var countryFilter = _states.CountryBoxText?.Trim().ToLower();
+            var nameFilter = FormState.NameBoxText?.Trim().ToLower();
+            var surnameFilter = FormState.SurnameBoxText?.Trim().ToLower();
+            var patronymicFilter = FormState.PatronymicBoxText?.Trim().ToLower();
+            var cityFilter = FormState.CityBoxText?.Trim().ToLower();
+            var countryFilter = FormState.CountryBoxText?.Trim().ToLower();
 
-            DateTime? parsedDate = _states.DateOfDatepicker;
+            DateTime? parsedDate = FormState.DateOfDatepicker;
 
             return dataBase.Person.Where(u =>
-                (_states.DateOfDatepicker == null ||u.Date == parsedDate) &&
+                (FormState.DateOfDatepicker == null ||u.Date == parsedDate) &&
                 (string.IsNullOrEmpty(nameFilter) || u.Name.ToLower().Contains(nameFilter)) &&
                 (string.IsNullOrEmpty(surnameFilter) || u.Surname.ToLower().Contains(surnameFilter)) &&
                 (string.IsNullOrEmpty(patronymicFilter) || u.Patronymic.ToLower().Contains(patronymicFilter)) &&
