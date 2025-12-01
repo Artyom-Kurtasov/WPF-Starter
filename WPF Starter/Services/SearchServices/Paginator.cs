@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using WPF_Starter.DataBase;
-using WPF_Starter.Models;
+﻿using WPF_Starter.Models;
+using WPF_Starter.Services.DataBase;
 
-namespace WPF_Starter.ViewModels.SearchServices
+namespace WPF_Starter.Services.SearchServices
 {
     public class Paginator
     {

@@ -1,10 +1,6 @@
 ﻿using ClosedXML.Excel;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using WPF_Starter.ViewModels.Interfaces;
 
-namespace WPF_Starter.ViewModels.FileServices
+namespace WPF_Starter.Services.FileServices
 {
     public class InitializeExcelFile
     {

@@ -6,6 +6,9 @@
         xmlns:local="clr-namespace:WPF_Starter"
         mc:Ignorable="d"
         Title="DataGridWindow" Height="450" Width="800">
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -22,7 +25,8 @@
               AutoGenerateColumns="False"
               EnableRowVirtualization="True"
               VirtualizingPanel.IsVirtualizing="True"
-              VirtualizingPanel.VirtualizationMode="Recycling">
+              VirtualizingPanel.VirtualizationMode="Recycling"
+              ItemsSource="{Binding PagingSettings.GridPeoples}">
 
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Date"
@@ -36,9 +40,15 @@
         </DataGrid>
 
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
-            <Button Content="Назад" Click="PreviousPage_Click" Margin="5"/>
-            <TextBlock x:Name="PageIndicator" VerticalAlignment="Center" Margin="5"/>
-            <Button Content="Вперёд" Click="NextPage_Click" Margin="5"/>
+            <Button Content="Назад" Margin="5" Command="{Binding NavigationCommands.GetPreviosPage}"/>
+            <TextBlock x:Name="PageIndicator" VerticalAlignment="Center" Margin="5" Text="{Binding PagingSettings.PageIndicator}"/>
+            <Button Content="Вперёд" Margin="5" Command="{Binding NavigationCommands.GetNextPage}"/>
         </StackPanel>
+        <ProgressBar 
+                     x:Name="ProgressBar" HorizontalAlignment="Left" Height="10" 
+                     Margin="27,0,0,0" Grid.Row="2" 
+                     VerticalAlignment="Center" Width="100"
+                     IsIndeterminate="True"
+                     Visibility="{Binding LoadingState.IsLoading, Converter={StaticResource BoolToVisibilityConverter}}"/>
     </Grid>
 </Window>

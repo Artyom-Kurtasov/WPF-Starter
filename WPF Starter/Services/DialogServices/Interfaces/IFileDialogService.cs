@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace WPF_Starter.ViewModels.Interfaces
+﻿namespace WPF_Starter.Services.DialogServices.Interfaces
 {
     public interface IFileDialogService
     {

@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Xml.Linq;
-using WPF_Starter.ViewModels.Interfaces;
+﻿using System.Xml.Linq;
 
-namespace WPF_Starter.ViewModels.FileServices
+namespace WPF_Starter.Services.FileServices
 {
     public  class InitializeXmlFile
     {

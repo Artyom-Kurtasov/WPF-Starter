@@ -1,17 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Xml.Serialization;
-using WPF_Starter.DataBase;
-using WPF_Starter.Models;
-using WPF_Starter.View;
-using System.Data.SqlClient;
-using System.Windows;
-using DocumentFormat.OpenXml.Drawing.Diagrams;
-using System.Globalization;
+﻿using WPF_Starter.Models;
+using WPF_Starter.Services.DataBase;
 
-namespace WPF_Starter.ViewModels.SearchServices
+namespace WPF_Starter.Services.SearchServices
 {
     public class Search
     {

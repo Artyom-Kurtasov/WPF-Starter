@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using WPF_Starter.DataBase;
+﻿using Microsoft.EntityFrameworkCore;
 using WPF_Starter.Models;
 
-namespace WPF_Starter.ViewModels.DataBaseServices
+namespace WPF_Starter.Services.DataBase
 {
     public class DataBaseWriter
     {
@@ -18,18 +15,19 @@ namespace WPF_Starter.ViewModels.DataBaseServices
         }
         private void ClearDataBase(AppDbContext dataBase)
         {
-            var deletable = dataBase.Person.Where(u => u.Id != null);
-            dataBase.Person.RemoveRange(deletable);
+            dataBase.Database.ExecuteSqlRaw("TRUNCATE TABLE [dbo].[Table]");
         }
 
         public void Save(AppDbContext dataBase)
         {
             ClearDataBase(dataBase);
-            foreach (var batch in _csvParser.Parse(_exportSettings.CsvFileName).Chunk(1000))
+            foreach (var batch in _csvParser.Parse(_exportSettings.CsvFilePath).Chunk(1000))
             {
-                dataBase.AddRange(batch);
-                dataBase.SaveChanges();
-                dataBase.ChangeTracker.Clear();
+                {
+                    dataBase.AddRange(batch);
+                    dataBase.SaveChanges();
+                    dataBase.ChangeTracker.Clear();
+                }
             }
         }
     }

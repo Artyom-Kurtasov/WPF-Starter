@@ -1,17 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using WPF_Starter.Models;
-using WPF_Starter.ViewModels;
+﻿using System.Windows;
+using WPF_Starter.Services.Export;
 
 namespace WPF_Starter.View
 {
@@ -20,10 +8,12 @@ namespace WPF_Starter.View
     /// </summary>
     public partial class Export : Window
     {
-        public Export()
+        private readonly ExportNotifyer _exportNotifyer;
+        public Export(ExportNotifyer exportNotifyer)
         {
             InitializeComponent();
 
+            _exportNotifyer = exportNotifyer;
         }
     }
 }

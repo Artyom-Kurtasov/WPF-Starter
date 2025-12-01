@@ -1,13 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Win32;
-using System.Configuration;
-using System.Data;
 using System.Windows;
-using System.Windows.Input;
 using WPF_Starter.Config;
 using WPF_Starter.Models;
-using WPF_Starter.View;
-using WPF_Starter.ViewModels;
+using WPF_Starter.Services;
 
 namespace WPF_Starter
 {
@@ -17,27 +12,32 @@ namespace WPF_Starter
     public partial class App : Application
     {
         public static ServiceProvider? ServiceProvider { get; private set; }
-        protected override void OnStartup(StartupEventArgs e)
+        protected override async void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
 
             var culture = new System.Globalization.CultureInfo("ru-RU");
-            System.Threading.Thread.CurrentThread.CurrentCulture = culture;
-            System.Threading.Thread.CurrentThread.CurrentUICulture = culture;
+            Thread.CurrentThread.CurrentCulture = culture;
+            Thread.CurrentThread.CurrentUICulture = culture;
 
             ServiceCollection services = new();
             var config = new Configure();
             config.conf(services);
             ServiceProvider = services.BuildServiceProvider();
 
+            var subscriptionManager = ServiceProvider.GetRequiredService<SubscriptionManager>();
+
+            var loading = ServiceProvider.GetRequiredService<LoadingState>();
             var mainWindowInitialization = ServiceProvider.GetRequiredService<MainWindowInitialization>();
             var mainWindow = mainWindowInitialization.Init();
 
-            var dataLoader = ServiceProvider.GetRequiredService<StartupDataLoader>();
-            dataLoader.InitializationData(mainWindow);
-
             MainWindow = mainWindow;
             MainWindow.Show();
+
+            loading.IsLoading = true;
+            var dataLoader = ServiceProvider.GetRequiredService<StartupDataLoader>();
+            await dataLoader.InitializeAsync();
+            loading.IsLoading = false;
         }
         protected override void OnExit(ExitEventArgs e)
         {

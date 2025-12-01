@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WPF_Starter.Models;
 
-namespace WPF_Starter.DataBase
+namespace WPF_Starter.Services.DataBase
 {
     public class AppDbContext : DbContext
     {

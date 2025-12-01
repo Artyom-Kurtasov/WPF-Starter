@@ -1,12 +1,6 @@
-﻿using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows.Media.Animation;
-using WPF_Starter.Models;
-using WPF_Starter.ViewModels.Interfaces;
+﻿using WPF_Starter.Services.DialogServices.Interfaces;
 
-namespace WPF_Starter.ViewModels
+namespace WPF_Starter.Services.FileServices
 {
 public class FilesLoader
 {

@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Xml.Linq;
-using WPF_Starter.DataBase;
+﻿using System.Xml.Linq;
 using WPF_Starter.Models;
-using WPF_Starter.ViewModels.Interfaces;
-using WPF_Starter.ViewModels.SearchServices;
+using WPF_Starter.Services.DataBase;
+using WPF_Starter.Services.SearchServices;
 
-namespace WPF_Starter.ViewModels.FileServices
+namespace WPF_Starter.Services.FileServices
 {
     public class CreateRootElement
     {

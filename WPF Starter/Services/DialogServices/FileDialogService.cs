@@ -1,10 +1,7 @@
 ﻿using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using WPF_Starter.ViewModels.Interfaces;
+using WPF_Starter.Services.DialogServices.Interfaces;
 
-namespace WPF_Starter.ViewModels.DialogServices
+namespace WPF_Starter.Services.DialogServices
 {
     public class FileDialogService : IFileDialogService
     {
