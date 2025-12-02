@@ -2,13 +2,18 @@
 using WPF_Starter.Services.DataBase;
 using WPF_Starter.Services.DialogServices.Interfaces;
 using WPF_Starter.Services.FileServices;
+using WPF_Starter.Services.Notifiers;
 using WPF_Starter.Services.SearchServices;
 
 namespace WPF_Starter.Services.Export
 {
     public class ExportToXml
     {
-        public event Action? ExportToXmlCompleted;
+        public event Action? ExportCompleted;
+        public event Action? ExportFailed;
+        public event Action? InvalidPath;
+
+
         private readonly PagingSettings _pagingSettings;
         private readonly Paginator _paginator;
         private readonly Search _search;
@@ -17,10 +22,9 @@ namespace WPF_Starter.Services.Export
         private readonly ExportSettings _exportSettings;
         private readonly InitializeXmlFile _initializeXmlFile;
         private readonly IFileDialogService _fileDialogServices;
-        private readonly ErrorNotifier _errorNotifier;
 
         public ExportToXml(IFileDialogService fileDialogServices, InitializeXmlFile initializeXmlFile, ExportSettings exportSettings, CreateRootElement createRootElement,
-            AppDbContext dataBase, Search search, Paginator paginator, PagingSettings pagingSettings, ErrorNotifier errorNotifier)
+            AppDbContext dataBase, Search search, Paginator paginator, PagingSettings pagingSettings)
         {
             _fileDialogServices = fileDialogServices;
             _initializeXmlFile = initializeXmlFile;
@@ -30,7 +34,6 @@ namespace WPF_Starter.Services.Export
             _paginator = paginator;
             _createRootElement = createRootElement;
             _pagingSettings = pagingSettings;
-            _errorNotifier = errorNotifier;
         }
         public async Task Export()
         {
@@ -41,17 +44,17 @@ namespace WPF_Starter.Services.Export
 
                 if(string.IsNullOrEmpty(_exportSettings.XmlFileName))
                 {
-                    _errorNotifier.Notify("No path has been selected to save the file.");
+                    InvalidPath?.Invoke();
                     return;
                 }
 
                 _initializeXmlFile.InitializeFile(_exportSettings.XmlFileName);
                await Task.Run(() => _createRootElement.Fill(_dataBase, _exportSettings, _search, _paginator, _pagingSettings));
-                ExportToXmlCompleted?.Invoke();
+                ExportCompleted?.Invoke();
             }
             catch (Exception)
             {
-                _errorNotifier.Notify($"Something went wrong. Please try again. More information has been saved to the log file.");
+                ExportFailed?.Invoke();
             }
             finally
             {

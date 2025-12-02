@@ -17,7 +17,8 @@
         </Grid.RowDefinitions>
 
         <Menu Grid.Row="0">
-            <MenuItem Header="Export" Command="{Binding NavigationCommands.ShowExportForm}" />
+            <MenuItem Header="Export" Command="{Binding NavigationCommands.ShowExportForm}"/>
+            <MenuItem Header="Import csv" Command="{Binding ImportCommands.ImportCommand}"/>
         </Menu>
 
         <DataGrid x:Name="peoplesGrid"

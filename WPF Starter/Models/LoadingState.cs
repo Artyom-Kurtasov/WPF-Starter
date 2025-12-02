@@ -4,7 +4,7 @@ namespace WPF_Starter.Models
 {
     public class LoadingState :INotifyPropertyChanged
     {
-        private bool _isLoading;
+        private bool _isLoading = false;
         public bool IsLoading
         {
             get => _isLoading;

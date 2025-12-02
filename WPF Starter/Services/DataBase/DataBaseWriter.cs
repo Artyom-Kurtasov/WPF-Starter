@@ -18,16 +18,15 @@ namespace WPF_Starter.Services.DataBase
             dataBase.Database.ExecuteSqlRaw("TRUNCATE TABLE [dbo].[Table]");
         }
 
-        public void Save(AppDbContext dataBase)
+        public async Task SaveAsync(AppDbContext dataBase)
         {
             ClearDataBase(dataBase);
+
             foreach (var batch in _csvParser.Parse(_exportSettings.CsvFilePath).Chunk(1000))
             {
-                {
-                    dataBase.AddRange(batch);
-                    dataBase.SaveChanges();
-                    dataBase.ChangeTracker.Clear();
-                }
+                await dataBase.AddRangeAsync(batch);
+                await dataBase.SaveChangesAsync();
+                dataBase.ChangeTracker.Clear();
             }
         }
     }

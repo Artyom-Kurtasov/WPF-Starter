@@ -6,7 +6,6 @@ namespace WPF_Starter.ViewModels.Commands
 {
     public class ExportCommands
     {
-        private readonly RefreshStates _refreshStates;
         private readonly ExportSettings _exportSettings;
         private readonly ExportToXml _exportToXml;
         private readonly ExportToExcel _exportToExcel;
@@ -14,8 +13,7 @@ namespace WPF_Starter.ViewModels.Commands
         public ICommand ExportToXmlFile { get; }
         public ICommand ExportToExcelFile { get; }
 
-        public ExportCommands(ExportToXml exportToXml, ExportToExcel exportToExcel, ExportSettings exportSettings, LoadingState loadingState,
-            RefreshStates refreshStates)
+        public ExportCommands(ExportToXml exportToXml, ExportToExcel exportToExcel, ExportSettings exportSettings, LoadingState loadingState)
         {
             ExportToExcelFile = new AsyncRelayCommand(ExportExcelExecute, CanExportExcelExecute);
             ExportToXmlFile = new AsyncRelayCommand(ExportXmlExecute, CanExportXmlExecute);
@@ -24,7 +22,6 @@ namespace WPF_Starter.ViewModels.Commands
             _exportToExcel = exportToExcel;
             _exportSettings = exportSettings;
             _loadingState = loadingState;
-            _refreshStates = refreshStates;
 
             _loadingState.PropertyChanged += (s, e) =>
             {
@@ -47,7 +44,7 @@ namespace WPF_Starter.ViewModels.Commands
 
         private async Task ExportXmlExecute() => await _exportToXml.Export();
 
-        private bool CanExportExcelExecute() => !_exportSettings.IsExporting;
-        private bool CanExportXmlExecute() => !_exportSettings.IsExporting;
+        private bool CanExportExcelExecute() => !_exportSettings.IsExporting && !_loadingState.IsLoading;
+        private bool CanExportXmlExecute() => !_exportSettings.IsExporting && !_loadingState.IsLoading;
     }
 }

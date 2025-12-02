@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System.Windows.Input;
+using WPF_Starter.Config;
 using WPF_Starter.Models;
 using WPF_Starter.Services.DataBase;
 using WPF_Starter.Services.DataGridServices;
@@ -74,9 +75,10 @@ namespace WPF_Starter.ViewModels.Commands
         }
         private void ShowExportFormExecute()
         {
-            _export = App.ServiceProvider.GetRequiredService<Export>();
-            _export.DataContext = App.ServiceProvider.GetRequiredService<MainWindowViewModel>();
-            _export.Show();
+            var exportInit = App.ServiceProvider.GetRequiredService<ExportWindowInitialization>();
+            var exportWindow = exportInit.Init();
+            exportWindow.Show();
+
         }
 
         private bool CanShowExportForm() => !_loadingState.IsLoading;

@@ -8,7 +8,7 @@ namespace WPF_Starter.Services.DataGridServices
     {
         public List<People> GetPage(AppDbContext dataBase, PagingSettings pagingSettings, Search search)
         {
-            var query = search.SearchPeople(dataBase);
+            IQueryable<People> query = search.SearchPeople(dataBase);
 
             return query
                 .Skip(pagingSettings.Page * pagingSettings.PageSize)

@@ -1,8 +1,12 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using System.IO;
 using System.Windows;
 using WPF_Starter.Config;
 using WPF_Starter.Models;
 using WPF_Starter.Services;
+using WPF_Starter.Services.DataBase;
+using WPF_Starter.Services.MessageServices;
+using WPF_Starter.Services.Notifiers;
 
 namespace WPF_Starter
 {
@@ -12,6 +16,9 @@ namespace WPF_Starter
     public partial class App : Application
     {
         public static ServiceProvider? ServiceProvider { get; private set; }
+        public event Action? FileNotFound;
+        public event Action? LoadFailed;
+        public event Action? LoadCompletedEvent;
         protected override async void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
@@ -20,25 +27,47 @@ namespace WPF_Starter
             Thread.CurrentThread.CurrentCulture = culture;
             Thread.CurrentThread.CurrentUICulture = culture;
 
-            ServiceCollection services = new();
-            var config = new Configure();
-            config.conf(services);
+            var services = new ServiceCollection();
+            var configure = new Configure();
+            configure.conf(services);
+
             ServiceProvider = services.BuildServiceProvider();
 
-            var subscriptionManager = ServiceProvider.GetRequiredService<SubscriptionManager>();
-
             var loading = ServiceProvider.GetRequiredService<LoadingState>();
+            var errorNotifier = ServiceProvider.GetRequiredService<ErrorNotifier>();
+            var dataBaseNotifier = ServiceProvider.GetService<DataBaseNotifier>();
             var mainWindowInitialization = ServiceProvider.GetRequiredService<MainWindowInitialization>();
-            var mainWindow = mainWindowInitialization.Init();
+            var appDbContext = ServiceProvider.GetRequiredService<AppDbContext>();
+            var filePath = ServiceProvider.GetRequiredService<ExportSettings>();
 
-            MainWindow = mainWindow;
+            MainWindow = mainWindowInitialization.InitMainWindow();
             MainWindow.Show();
 
-            loading.IsLoading = true;
+
+            this.FileNotFound += errorNotifier.OnFileNotFound;
+            this.LoadFailed += errorNotifier.OnErrorOccurred;
+            this.LoadCompletedEvent += dataBaseNotifier.OnLoadCompleted;
+
             var dataLoader = ServiceProvider.GetRequiredService<StartupDataLoader>();
-            await dataLoader.InitializeAsync();
-            loading.IsLoading = false;
+            try
+            {
+                await dataLoader.InitializeAsync(filePath.CsvFilePath, appDbContext);
+                LoadCompletedEvent?.Invoke();
+            }
+            catch (FileNotFoundException)
+            {
+                FileNotFound?.Invoke();
+            }
+            catch (Exception)
+            {
+                LoadFailed?.Invoke();
+            }
+            finally
+            {
+                loading.IsLoading = false;
+            }
         }
+
         protected override void OnExit(ExitEventArgs e)
         {
             base.OnExit(e);
