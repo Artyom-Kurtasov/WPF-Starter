@@ -7,8 +7,12 @@
         mc:Ignorable="d"
         Title="ExportToExcel" Height="400" Width="259"
         ResizeMode="CanMinimize">
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -124,5 +128,8 @@
             <Button Content="Export to Excel" Command="{Binding ExportCommands.ExportToExcelFile}" Margin="5"/>
             <Button Content="Export to Xml" Command="{Binding ExportCommands.ExportToXmlFile}" Margin="5"/>
         </StackPanel>
+        <ProgressBar HorizontalAlignment="Center" Height="10" Margin="0,0,0,0" Grid.Row="7" VerticalAlignment="Top" Width="100"
+                     IsIndeterminate="True"
+                     Visibility="{Binding ExportSettings.IsExporting, Converter={StaticResource BoolToVisibilityConverter}}"/>
     </Grid>
 </Window>

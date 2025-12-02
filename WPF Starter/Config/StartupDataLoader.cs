@@ -1,47 +1,32 @@
-﻿using DocumentFormat.OpenXml.Drawing.Diagrams;
-using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using System.Windows;
-using WPF_Starter.DataBase;
+﻿using System.IO;
 using WPF_Starter.Models;
-using WPF_Starter.ViewModels;
-using WPF_Starter.ViewModels.DataBaseServices;
-using WPF_Starter.ViewModels.FileServices;
-using WPF_Starter.ViewModels.SearchServices;
+using WPF_Starter.Services.DataBase;
+using WPF_Starter.Services.Notifiers;
 
 namespace WPF_Starter.Config
 {
     public class StartupDataLoader
     {
-        private readonly Search _search;
-        private readonly Paginator _paginator;
-        private readonly PagingSettings _pagingSettings;
-        private readonly ExportSettings _exportSettings;
-        private readonly IServiceProvider _serviceProvider;
-        private readonly AppDbContext _appDbContext;
+        private PagingSettings _pagingSettings;
+        private readonly DataBaseWriter _dataBaseWriter;
+        private readonly GridDataService _gridDataService;
+        private readonly LoadingState _loadingState;
 
-        public StartupDataLoader(IServiceProvider serviceProvider, AppDbContext appDbContext, ExportSettings exportSettings,
-            Paginator paginator, PagingSettings pagingSettings, Search search)
+        public StartupDataLoader(PagingSettings pagingSettings, GridDataService gridDataService,
+            DataBaseWriter dataBaseWriter, LoadingState loadingState)
         {
-            _serviceProvider = serviceProvider;
-            _appDbContext = appDbContext;
-            _exportSettings = exportSettings;
-            _paginator = paginator;
             _pagingSettings = pagingSettings;
-            _search = search;
+            _gridDataService = gridDataService;
+            _dataBaseWriter = dataBaseWriter;
+            _loadingState = loadingState;
         }
 
-        public void InitializationData(MainWindow mainWindow)
+        public async Task InitializeAsync(string filePath, AppDbContext appDbContext)
         {
-            var csvLoader = _serviceProvider.GetRequiredService<FilesLoader>();
-            var dataBaseLoader = _serviceProvider.GetRequiredService<DataBaseLoader>();
-            var gridManager = _serviceProvider.GetRequiredService<DataGridManager>();
-
-            dataBaseLoader.LoadDataBase(_appDbContext);
-            gridManager.SetDataGrid(mainWindow.peoplesGrid, _appDbContext, _pagingSettings, _search);
+            _loadingState.IsLoading = true;
+             await _dataBaseWriter.SaveAsync(appDbContext);
+            _pagingSettings.GridPeoples = _gridDataService.GetPage();
+            _loadingState.IsLoading = false;
         }
     }
 }

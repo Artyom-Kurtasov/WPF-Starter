@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
+﻿using System.ComponentModel;
 using System.Windows.Input;
 using WPF_Starter.Models;
 
@@ -19,12 +16,12 @@ namespace WPF_Starter.ViewModels.Commands
 
         public ClearCommands(PeopleFormState peopleFormState)
         {
-            ClearDatePickerCommand = new RelayCommands(ClearDatePicker, CanClearDatePicker);
-            ClearNameCommand = new RelayCommands(ClearNameTextBox, CanClearNameTextBox);
-            ClearSurnameCommand = new RelayCommands(ClearSurnameTextBox, CanClearSurnameTextBox);
-            ClearPatronymicCommand = new RelayCommands(ClearPatronymicTextBox, CanClearPatronymicTextBox);
-            ClearCityCommand = new RelayCommands(ClearCityTextBox, CanClearCityTextBox);
-            ClearCountryCommand = new RelayCommands(ClearCountryTextBox, CanClearCountryTextBox);
+            ClearDatePickerCommand = new RelayCommand(ClearDatePicker, CanClearDatePicker);
+            ClearNameCommand = new RelayCommand(ClearNameTextBox, CanClearNameTextBox);
+            ClearSurnameCommand = new RelayCommand(ClearSurnameTextBox, CanClearSurnameTextBox);
+            ClearPatronymicCommand = new RelayCommand(ClearPatronymicTextBox, CanClearPatronymicTextBox);
+            ClearCityCommand = new RelayCommand(ClearCityTextBox, CanClearCityTextBox);
+            ClearCountryCommand = new RelayCommand(ClearCountryTextBox, CanClearCountryTextBox);
             _peopleFormState = peopleFormState;
         }
 

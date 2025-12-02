@@ -1,22 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Xml.Serialization;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Win32;
-using WPF_Starter.DataBase;
 using WPF_Starter.Models;
+using WPF_Starter.Services;
+using WPF_Starter.Services.DataBase;
+using WPF_Starter.Services.DataGridServices;
+using WPF_Starter.Services.DialogServices;
+using WPF_Starter.Services.DialogServices.Interfaces;
+using WPF_Starter.Services.Export;
+using WPF_Starter.Services.FileServices;
+using WPF_Starter.Services.Import;
+using WPF_Starter.Services.MessageServices;
+using WPF_Starter.Services.MessageServices.Interfaces;
+using WPF_Starter.Services.Notifiers;
+using WPF_Starter.Services.SearchServices;
 using WPF_Starter.View;
 using WPF_Starter.ViewModels;
 using WPF_Starter.ViewModels.Commands;
-using WPF_Starter.ViewModels.DataBaseServices;
-using WPF_Starter.ViewModels.DialogServices;
-using WPF_Starter.ViewModels.ExportData;
-using WPF_Starter.ViewModels.FileServices;
-using WPF_Starter.ViewModels.Interfaces;
-using WPF_Starter.ViewModels.SearchServices;
 
 namespace WPF_Starter.Config
 {
@@ -32,28 +31,44 @@ namespace WPF_Starter.Config
             services.AddSingleton<PagingSettings>();
             services.AddSingleton<DataGridManager>();
             services.AddSingleton<MainWindowViewModel>();
+            services.AddSingleton<DataBaseNotifier>();
+            services.AddSingleton<ExportNotifyer>();
+            services.AddSingleton<DataBaseNotifier>();
+            services.AddSingleton<ErrorNotifier>();
+            services.AddSingleton<ImportNotifier>();
+            services.AddSingleton<StartupDataLoader>();
+            services.AddSingleton<IMessageBoxService, MessageBoxService>();
+            services.AddSingleton<LoadingState>();
+            services.AddSingleton<ExportToExcel>();
+            services.AddSingleton<ExportToXml>();
+            services.AddSingleton<ImportCsv>();
+            services.AddSingleton<ImportCommands>();
+            services.AddSingleton<ExportWindowInitialization>();
+            services.AddSingleton<ExportWindowViewModel>();
 
+
+            services.AddTransient<RefreshStates>();
+            services.AddTransient<GridDataService>();
             services.AddTransient<Search>();
-            services.AddTransient<FilesLoader>();
             services.AddTransient<InitializeXmlFile>();
             services.AddTransient<InitializeExcelFile>();
-            services.AddTransient<ExportToExcel>();
-            services.AddTransient<ExportToXml>();
             services.AddTransient<Paginator>();
             services.AddTransient<FillWorksheet>();
             services.AddTransient<CreateRootElement>();
-            services.AddTransient<DataBaseLoader>();
             services.AddTransient<DataBaseWriter>();
             services.AddTransient<CsvParser>();
             services.AddTransient<IFileDialogService, FileDialogService>();
             services.AddTransient<ExportCommands>();
             services.AddTransient<ClearCommands>();
             services.AddTransient<NavigationCommands>();
-            services.AddTransient<RelayCommands>();
+            services.AddTransient<RelayCommand>();
+            services.AddTransient<AsyncRelayCommand>();
             services.AddTransient<MainWindow>();
             services.AddTransient<Export>();
             services.AddTransient<MainWindowInitialization>();
-            services.AddTransient<StartupDataLoader>();
+            services.AddTransient<CsvFileReader>();
+            services.AddTransient<CsvRowParser>();
+            services.AddTransient<PeopleMapper>();
         }
     }
 }

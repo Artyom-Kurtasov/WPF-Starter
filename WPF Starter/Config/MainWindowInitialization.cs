@@ -1,10 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows;
-using WPF_Starter.DataBase;
 using WPF_Starter.Models;
+using WPF_Starter.Services.DataBase;
+using WPF_Starter.Services.DataGridServices;
+using WPF_Starter.Services.Notifiers;
+using WPF_Starter.Services.SearchServices;
 using WPF_Starter.ViewModels;
 using WPF_Starter.ViewModels.Commands;
 
@@ -19,17 +18,25 @@ namespace WPF_Starter.Config
             _serviceProvider = serviceProvider;
         }
 
-        public MainWindow Init() 
+        public MainWindow InitMainWindow()
         {
             var mainWindow = _serviceProvider.GetRequiredService<MainWindow>();
-            var clearCommands = _serviceProvider.GetRequiredService<ClearCommands>();
-            var exportCommands = _serviceProvider.GetRequiredService<ExportCommands>();
             var navigationCommands = _serviceProvider.GetRequiredService<NavigationCommands>();
-            var peopleFormState = _serviceProvider.GetRequiredService<PeopleFormState>();
+            var pagingSettings = _serviceProvider.GetRequiredService<PagingSettings>();
+            var loadingState = _serviceProvider.GetRequiredService<LoadingState>();
+            var importCommands = _serviceProvider.GetRequiredService<ImportCommands>();
 
-            mainWindow.DataContext = new MainWindowViewModel(peopleFormState, clearCommands, exportCommands, navigationCommands);
+            var startupNotifier = _serviceProvider.GetRequiredService<DataBaseNotifier>();
+            var importNotifier = _serviceProvider.GetRequiredService<ImportNotifier>();
+
+            mainWindow.DataContext = new MainWindowViewModel(
+                navigationCommands,
+                pagingSettings,
+                loadingState,
+                importCommands);
 
             return mainWindow;
         }
+
     }
 }
