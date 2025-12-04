@@ -6,6 +6,10 @@ namespace WPF_Starter.Services.DataGridServices
 {
     public class DataGridManager
     {
+        /// <summary>
+        /// Return a single page of List<People> from the database
+        /// applying search filters and paging settings
+        /// </summary>
         public List<People> GetPage(AppDbContext dataBase, PagingSettings pagingSettings, Search search)
         {
             IQueryable<People> query = search.SearchPeople(dataBase);

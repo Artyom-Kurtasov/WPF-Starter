@@ -1,19 +1,19 @@
 ﻿using System.Windows.Input;
 using WPF_Starter.Models;
-using WPF_Starter.Services.Export;
+using WPF_Starter.Services.Export.Interfaces;
 
 namespace WPF_Starter.ViewModels.Commands
 {
     public class ExportCommands
     {
         private readonly ExportSettings _exportSettings;
-        private readonly ExportToXml _exportToXml;
-        private readonly ExportToExcel _exportToExcel;
+        private readonly IExportToXml _exportToXml;
+        private readonly IExportToExcel _exportToExcel;
         private readonly LoadingState _loadingState;
         public ICommand ExportToXmlFile { get; }
         public ICommand ExportToExcelFile { get; }
 
-        public ExportCommands(ExportToXml exportToXml, ExportToExcel exportToExcel, ExportSettings exportSettings, LoadingState loadingState)
+        public ExportCommands(IExportToXml exportToXml, IExportToExcel exportToExcel, ExportSettings exportSettings, LoadingState loadingState)
         {
             ExportToExcelFile = new AsyncRelayCommand(ExportExcelExecute, CanExportExcelExecute);
             ExportToXmlFile = new AsyncRelayCommand(ExportXmlExecute, CanExportXmlExecute);

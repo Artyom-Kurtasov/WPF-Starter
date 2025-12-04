@@ -1,7 +1,4 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using WPF_Starter.Models;
 using WPF_Starter.Services.DataGridServices;
 using WPF_Starter.View;
@@ -21,13 +18,13 @@ namespace WPF_Starter.Config
 
         public Export Init()
         {
-            var exportWindow = _serviceProvider.GetRequiredService<Export>();
+            Export? exportWindow = _serviceProvider.GetRequiredService<Export>();
 
-            var peopleFormState = _serviceProvider.GetRequiredService<PeopleFormState>();
-            var clearCommands = _serviceProvider.GetRequiredService<ClearCommands>();
-            var exportCommands = _serviceProvider.GetRequiredService<ExportCommands>();
-            var dataGridManager = _serviceProvider.GetRequiredService<DataGridManager>();
-            var exportSettings = _serviceProvider.GetRequiredService<ExportSettings>();
+            PeopleFormState? peopleFormState = _serviceProvider.GetRequiredService<PeopleFormState>();
+            ClearCommands? clearCommands = _serviceProvider.GetRequiredService<ClearCommands>();
+            ExportCommands? exportCommands = _serviceProvider.GetRequiredService<ExportCommands>();
+            DataGridManager? dataGridManager = _serviceProvider.GetRequiredService<DataGridManager>();
+            ExportSettings? exportSettings = _serviceProvider.GetRequiredService<ExportSettings>();
 
             exportWindow.DataContext = new ExportWindowViewModel(
                 peopleFormState,

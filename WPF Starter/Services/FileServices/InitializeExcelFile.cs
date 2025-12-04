@@ -1,4 +1,5 @@
 ﻿using ClosedXML.Excel;
+using DocumentFormat.OpenXml.Packaging;
 
 namespace WPF_Starter.Services.FileServices
 {
@@ -6,7 +7,7 @@ namespace WPF_Starter.Services.FileServices
     {
         public void InitializeFile(string fileName)
         {
-            using (var workbook = new XLWorkbook())
+            using (XLWorkbook? workbook = new XLWorkbook())
             {
                 workbook.AddWorksheet("Data");
                 workbook.SaveAs(fileName);

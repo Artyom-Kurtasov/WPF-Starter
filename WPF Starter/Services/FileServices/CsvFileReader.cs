@@ -7,7 +7,7 @@ namespace WPF_Starter.Services.FileServices
     {
         public IEnumerable<string> ReadLines(string filePath)
         {
-            using var reader = new StreamReader(filePath, Encoding.UTF8, detectEncodingFromByteOrderMarks: true, bufferSize: 65536);
+            using StreamReader reader = new StreamReader(filePath, Encoding.UTF8, detectEncodingFromByteOrderMarks: true, bufferSize: 65536);
             string? line;
             while ((line = reader.ReadLine()) != null)
             {

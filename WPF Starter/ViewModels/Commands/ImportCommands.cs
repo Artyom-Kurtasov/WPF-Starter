@@ -1,20 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using WPF_Starter.Models;
-using WPF_Starter.Services.Import;
+using WPF_Starter.Services.Import.Interfaces;
 
 namespace WPF_Starter.ViewModels.Commands
 {
     public class ImportCommands
     {
-        private readonly ImportCsv _importCsv;
+        private readonly IImportCsv _importCsv;
         private readonly LoadingState _loadingState;
         private readonly ExportSettings _exportSettings;
         public ICommand ImportCommand { get; }
 
-        public ImportCommands(ImportCsv importCsv, LoadingState loadingState, ExportSettings exportSettings)
+        public ImportCommands(IImportCsv importCsv, LoadingState loadingState, ExportSettings exportSettings)
         {
             _importCsv = importCsv;
             _loadingState = loadingState;

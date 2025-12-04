@@ -1,5 +1,5 @@
 ﻿using System.Windows;
-using WPF_Starter.Services.Import;
+using WPF_Starter.Services.Import.Interfaces;
 using WPF_Starter.Services.MessageServices.Interfaces;
 
 namespace WPF_Starter.Services.Notifiers
@@ -7,9 +7,9 @@ namespace WPF_Starter.Services.Notifiers
     public class ImportNotifier
     {
         private readonly IMessageBoxService _messageBoxService;
-        private readonly ImportCsv _importCsv;
+        private readonly IImportCsv _importCsv;
 
-        public ImportNotifier(IMessageBoxService messageBoxService, ImportCsv importCsv)
+        public ImportNotifier(IMessageBoxService messageBoxService, IImportCsv importCsv)
         {
             _importCsv = importCsv;
             _messageBoxService = messageBoxService;
@@ -17,7 +17,7 @@ namespace WPF_Starter.Services.Notifiers
             _importCsv.ImportCompleted += OnImportCompleted;
         }
 
-        private void OnImportCompleted()
+        private void OnImportCompleted(object? sender, EventArgs e)
         {
             _messageBoxService.ShowMessage("Import has been completed.",
                "Success",

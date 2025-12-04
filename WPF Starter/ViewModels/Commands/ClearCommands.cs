@@ -1,10 +1,9 @@
-﻿using System.ComponentModel;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using WPF_Starter.Models;
 
 namespace WPF_Starter.ViewModels.Commands
 {
-    public class ClearCommands : INotifyPropertyChanged
+    public class ClearCommands
     {
         private readonly PeopleFormState _peopleFormState;
         public ICommand ClearDatePickerCommand { get; }
@@ -24,8 +23,6 @@ namespace WPF_Starter.ViewModels.Commands
             ClearCountryCommand = new RelayCommand(ClearCountryTextBox, CanClearCountryTextBox);
             _peopleFormState = peopleFormState;
         }
-
-        public event PropertyChangedEventHandler? PropertyChanged;
         private void ClearDatePicker() => _peopleFormState.DateOfDatepicker = null;
         private void ClearNameTextBox() => _peopleFormState.NameBoxText = string.Empty;
         private void ClearSurnameTextBox() => _peopleFormState.SurnameBoxText = string.Empty;

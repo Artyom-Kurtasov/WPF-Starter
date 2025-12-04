@@ -34,7 +34,15 @@
 
             <TextBlock Grid.Row="0" Grid.Column="0" Text="Date"/>
             <DatePicker Grid.Row="1" Grid.Column="0" Height="24"
-                        SelectedDate="{Binding PeopleFormState.DateOfDatepicker, Mode=TwoWay}"/>
+                        SelectedDate="{Binding PeopleFormState.DateOfDatepicker, Mode=TwoWay}">
+                <DatePicker.Resources>
+                    <Style TargetType="DatePickerTextBox">
+                        <Setter Property="IsReadOnly" Value="True">
+                            
+                        </Setter>
+                    </Style>
+                </DatePicker.Resources>
+            </DatePicker>
             <Button Grid.Row="1" Grid.Column="1" Content="🗑️"
                     Command="{Binding ClearCommands.ClearDatePickerCommand}" Height="24"/>
         </Grid>

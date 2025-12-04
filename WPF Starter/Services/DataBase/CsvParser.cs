@@ -15,9 +15,15 @@ namespace WPF_Starter.Services.DataBase
             _csvRowParser = csvRowParser;
             _peopleMapper = peopleMapper;
         }
-        public IEnumerable<People> Parse(string fileName)
+
+        /// <summary>
+        /// Parses a csv file
+        /// splits row into cells
+        /// ,aps the cells into People records
+        /// </summary>
+        public IEnumerable<People> Parse(string filePath)
         {
-            foreach (var line in _csvFileReader.ReadLines(fileName))
+            foreach (string? line in _csvFileReader.ReadLines(filePath))
             {
                 string[] cells = _csvRowParser.ParseRow(line);
                 if (cells == null) continue;

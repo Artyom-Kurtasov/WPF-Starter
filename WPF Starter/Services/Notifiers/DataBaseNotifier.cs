@@ -14,7 +14,7 @@ namespace WPF_Starter.Services.Notifiers
 
         }
 
-        public void OnLoadCompleted()
+        public void OnLoadCompleted(object? sender, EventArgs e)
         {
             _messageBoxService.ShowMessage("Database has been successfully loaded. You can now use the application.",
                 "Success",

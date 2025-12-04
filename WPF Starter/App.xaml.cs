@@ -1,11 +1,10 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using System.Globalization;
 using System.IO;
 using System.Windows;
 using WPF_Starter.Config;
 using WPF_Starter.Models;
-using WPF_Starter.Services;
 using WPF_Starter.Services.DataBase;
-using WPF_Starter.Services.MessageServices;
 using WPF_Starter.Services.Notifiers;
 
 namespace WPF_Starter
@@ -16,51 +15,77 @@ namespace WPF_Starter
     public partial class App : Application
     {
         public static ServiceProvider? ServiceProvider { get; private set; }
-        public event Action? FileNotFound;
-        public event Action? LoadFailed;
-        public event Action? LoadCompletedEvent;
+
+        public event EventHandler? FileNotFound;
+        public event EventHandler? LoadFailed;
+        public event EventHandler? LoadCompletedEvent;
+
         protected override async void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
 
-            var culture = new System.Globalization.CultureInfo("ru-RU");
+            ConfigureCulture();
+            ConfigureServices();
+
+            InitializeMainWindow();
+
+            SubscribeNotifiers();
+
+            await LoadStartupDataAsync();
+        }
+
+        private void ConfigureCulture()
+        {
+            CultureInfo? culture = new CultureInfo("ru-RU");
             Thread.CurrentThread.CurrentCulture = culture;
             Thread.CurrentThread.CurrentUICulture = culture;
+        }
 
-            var services = new ServiceCollection();
-            var configure = new Configure();
+        private void ConfigureServices()
+        {
+            IServiceCollection services = new ServiceCollection();
+            Configure? configure = new Configure();
             configure.conf(services);
 
             ServiceProvider = services.BuildServiceProvider();
+        }
 
-            var loading = ServiceProvider.GetRequiredService<LoadingState>();
-            var errorNotifier = ServiceProvider.GetRequiredService<ErrorNotifier>();
-            var dataBaseNotifier = ServiceProvider.GetService<DataBaseNotifier>();
-            var mainWindowInitialization = ServiceProvider.GetRequiredService<MainWindowInitialization>();
-            var appDbContext = ServiceProvider.GetRequiredService<AppDbContext>();
-            var filePath = ServiceProvider.GetRequiredService<ExportSettings>();
-
+        private void InitializeMainWindow()
+        {
+            MainWindowInitialization mainWindowInitialization = ServiceProvider!.GetRequiredService<MainWindowInitialization>();
             MainWindow = mainWindowInitialization.InitMainWindow();
             MainWindow.Show();
+        }
 
+        private void SubscribeNotifiers()
+        {
+            ErrorNotifier? errorNotifier = ServiceProvider!.GetRequiredService<ErrorNotifier>();
+            DataBaseNotifier? dataBaseNotifier = ServiceProvider!.GetRequiredService<DataBaseNotifier>();
 
-            this.FileNotFound += errorNotifier.OnFileNotFound;
-            this.LoadFailed += errorNotifier.OnErrorOccurred;
-            this.LoadCompletedEvent += dataBaseNotifier.OnLoadCompleted;
+            FileNotFound += errorNotifier.OnFileNotFound;
+            LoadFailed += errorNotifier.OnErrorOccurred;
+            LoadCompletedEvent += dataBaseNotifier.OnLoadCompleted;
+        }
 
-            var dataLoader = ServiceProvider.GetRequiredService<StartupDataLoader>();
+        private async Task LoadStartupDataAsync()
+        {
+            LoadingState? loading = ServiceProvider!.GetRequiredService<LoadingState>();
+            AppDbContext? appDbContext = ServiceProvider!.GetRequiredService<AppDbContext>();
+            ExportSettings? filePath = ServiceProvider!.GetRequiredService<ExportSettings>();
+            IStartupDataLoader? dataLoader = ServiceProvider!.GetRequiredService<IStartupDataLoader>();
+
             try
             {
                 await dataLoader.InitializeAsync(filePath.CsvFilePath, appDbContext);
-                LoadCompletedEvent?.Invoke();
+                LoadCompletedEvent?.Invoke(this, EventArgs.Empty);
             }
             catch (FileNotFoundException)
             {
-                FileNotFound?.Invoke();
+                FileNotFound?.Invoke(this, EventArgs.Empty);
             }
             catch (Exception)
             {
-                LoadFailed?.Invoke();
+                LoadFailed?.Invoke(this, EventArgs.Empty);
             }
             finally
             {

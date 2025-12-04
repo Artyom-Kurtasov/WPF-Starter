@@ -8,9 +8,13 @@ namespace WPF_Starter.Services
         private readonly string[] _formats = new[] { "dd.MM.yyyy", "dd/MM/yyyy", "yyyy-MM-dd" };
         private readonly CultureInfo _culture = new CultureInfo("ru-RU");
 
+        /// <summary>
+        /// Maps an array of CSV row cells into a People object
+        /// supports multiple date formats
+        /// </summary>
         public People? Map(string[] cells)
         {
-            if (!DateTime.TryParseExact(cells[0], _formats, _culture, DateTimeStyles.None, out var date))
+            if (!DateTime.TryParseExact(cells[0], _formats, _culture, DateTimeStyles.None, out DateTime date))
                 return null;
 
             return new People

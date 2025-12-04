@@ -1,17 +1,17 @@
 ﻿using WPF_Starter.Models;
 using WPF_Starter.Services.DataBase;
 using WPF_Starter.Services.DialogServices.Interfaces;
+using WPF_Starter.Services.Export.Interfaces;
 using WPF_Starter.Services.FileServices;
-using WPF_Starter.Services.Notifiers;
 using WPF_Starter.Services.SearchServices;
 
 namespace WPF_Starter.Services.Export
 {
-    public class ExportToExcel
+    public class ExportToExcel : IExportToExcel
     {
-        public event Action? ExportCompleted;
-        public event Action? ExportFailed;
-        public event Action? InvalidPath;
+        public event EventHandler? ExportCompleted;
+        public event EventHandler? ExportFailed;
+        public event EventHandler? InvalidPath;
 
 
         private readonly PagingSettings _pagingSettings;
@@ -34,6 +34,11 @@ namespace WPF_Starter.Services.Export
             _paginator = paginator;
             _pagingSettings = pagingSettings;
         }
+
+        /// <summary>
+        ///  Manages export state, create a excel file
+        ///  initializes and fills the file with data
+        /// </summary>
         public async Task Export()
         {
             _exportSettings.IsExporting = true;
@@ -43,17 +48,17 @@ namespace WPF_Starter.Services.Export
 
                 if (string.IsNullOrEmpty(_exportSettings.ExcelFileName))
                 {
-                    InvalidPath?.Invoke();
+                    InvalidPath?.Invoke(this, EventArgs.Empty);
                     return;
                 }
 
                 _initializeExcelFile.InitializeFile(_exportSettings.ExcelFileName);
                 await Task.Run(() => _worksheet.Fill(_dataBase, _exportSettings, _search, _paginator, _pagingSettings));
-                ExportCompleted?.Invoke();
+                ExportCompleted?.Invoke(this, EventArgs.Empty);
             }
             catch (Exception)
             {
-                ExportFailed?.Invoke();
+                ExportFailed?.Invoke(this, EventArgs.Empty);
             }
             finally
             {
