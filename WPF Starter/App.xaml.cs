@@ -45,7 +45,7 @@ namespace WPF_Starter
         {
             IServiceCollection services = new ServiceCollection();
             Configure? configure = new Configure();
-            configure.conf(services);
+            configure.ConfigureServices(services);
 
             ServiceProvider = services.BuildServiceProvider();
         }

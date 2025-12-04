@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using WPF_Starter.Config;
 using WPF_Starter.Services.MessageServices.Interfaces;
 
 namespace WPF_Starter.Services.Notifiers

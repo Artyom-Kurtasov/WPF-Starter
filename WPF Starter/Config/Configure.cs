@@ -23,7 +23,7 @@ namespace WPF_Starter.Config
 {
     public class Configure
     {
-        public void conf(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services)
         {
             //Data
             services.AddDbContext<AppDbContext>(options =>
