@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 
 namespace WPF_Starter.ViewModels.Commands
 {
@@ -16,19 +13,19 @@ namespace WPF_Starter.ViewModels.Commands
 
         public void RefreshSync()
         {
-            foreach (var cmd in _commands)
+            foreach (ICommand cmd in _commands)
                 if (cmd is RelayCommand rc) rc.RaiseCanExecuteChanged();
         }
 
         public void RefreshAsync()
         {
-            foreach (var cmd in _commands)
+            foreach (ICommand cmd in _commands)
                 if (cmd is AsyncRelayCommand arc) arc.RaiseCanExecuteChanged();
         }
 
         public void RefreshAll()
         {
-            foreach (var cmd in _commands)
+            foreach (ICommand cmd in _commands)
             {
                 switch (cmd)
                 {

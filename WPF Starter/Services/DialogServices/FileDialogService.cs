@@ -7,7 +7,7 @@ namespace WPF_Starter.Services.DialogServices
     {
         public string? ChooseFile(string filter, string title)
         {
-            var dialog = new OpenFileDialog
+            OpenFileDialog? dialog = new OpenFileDialog
             {
                 Filter = filter,
                 Title = title
@@ -17,7 +17,7 @@ namespace WPF_Starter.Services.DialogServices
 
         public string? CreateFile(string filter, string title)
         {
-            var dialog = new SaveFileDialog
+            SaveFileDialog? dialog = new SaveFileDialog
             {
                 Filter = filter,
                 Title = title

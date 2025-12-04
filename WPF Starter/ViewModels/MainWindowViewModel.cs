@@ -1,9 +1,4 @@
 ﻿using WPF_Starter.Models;
-using WPF_Starter.Services.DataBase;
-using WPF_Starter.Services.DataGridServices;
-using WPF_Starter.Services.Import;
-using WPF_Starter.Services.Notifiers;
-using WPF_Starter.Services.SearchServices;
 using WPF_Starter.ViewModels.Commands;
 
 namespace WPF_Starter.ViewModels

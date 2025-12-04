@@ -1,19 +1,18 @@
-﻿using WPF_Starter.Services.Import;
-using WPF_Starter.Services.MessageServices.Interfaces;
+﻿using WPF_Starter.Services.MessageServices.Interfaces;
 using System.Windows;
-using WPF_Starter.Services.Export;
-using WPF_Starter.Config;
+using WPF_Starter.Services.Import.Interfaces;
+using WPF_Starter.Services.Export.Interfaces;
 
 namespace WPF_Starter.Services.Notifiers
 {
     public class ErrorNotifier
     {
         private readonly IMessageBoxService _messageBoxService;
-        private readonly ImportCsv _importCsv;
-        private readonly ExportToExcel _exportToExcel;
-        private readonly ExportToXml _exportToXml;
+        private readonly IImportCsv _importCsv;
+        private readonly IExportToExcel _exportToExcel;
+        private readonly IExportToXml _exportToXml;
 
-        public ErrorNotifier(IMessageBoxService messageBoxService, ImportCsv importCsv, ExportToXml exportToXml, ExportToExcel exportToExcel)
+        public ErrorNotifier(IMessageBoxService messageBoxService, IImportCsv importCsv, IExportToXml exportToXml, IExportToExcel exportToExcel)
         {
             _messageBoxService = messageBoxService;
             _importCsv = importCsv;
@@ -30,7 +29,7 @@ namespace WPF_Starter.Services.Notifiers
             _exportToXml.ExportFailed += OnErrorOccurred;
         }
 
-        private void OnInvalidPath()
+        private void OnInvalidPath(object? sender, EventArgs e)
         {
             _messageBoxService.ShowMessage("No path has been selected.",
                 "Error",
@@ -38,15 +37,15 @@ namespace WPF_Starter.Services.Notifiers
                 MessageBoxButton.OK);
         }
 
-        public void OnErrorOccurred()
+        public void OnErrorOccurred(object? sender, EventArgs e)
         {
-            _messageBoxService.ShowMessage("Something went wrong. Please try again. More information has been saved to the log file.",
+            _messageBoxService.ShowMessage("Something went wrong. Please try again.",
                 "Error",
                 MessageBoxImage.Error,
                 MessageBoxButton.OK);
         }
 
-        public void OnFileNotFound()
+        public void OnFileNotFound(object? sender, EventArgs e)
         {
             _messageBoxService.ShowMessage(
                 "File not found. You can import it through the application.",

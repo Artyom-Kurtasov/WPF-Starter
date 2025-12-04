@@ -6,7 +6,7 @@ namespace WPF_Starter.Services.FileServices
     {
         public void InitializeFile(string fileName)
         {
-            var doc = new XDocument(new XElement("Peoples"));
+            XDocument? doc = new XDocument(new XElement("Peoples"));
             doc.Save(fileName);
         }
     }

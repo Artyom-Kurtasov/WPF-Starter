@@ -1,17 +1,17 @@
 ﻿using WPF_Starter.Models;
 using WPF_Starter.Services.DataBase;
 using WPF_Starter.Services.DialogServices.Interfaces;
+using WPF_Starter.Services.Export.Interfaces;
 using WPF_Starter.Services.FileServices;
-using WPF_Starter.Services.Notifiers;
 using WPF_Starter.Services.SearchServices;
 
 namespace WPF_Starter.Services.Export
 {
-    public class ExportToXml
+    public class ExportToXml : IExportToXml
     {
-        public event Action? ExportCompleted;
-        public event Action? ExportFailed;
-        public event Action? InvalidPath;
+        public event EventHandler? ExportCompleted;
+        public event EventHandler? ExportFailed;
+        public event EventHandler? InvalidPath;
 
 
         private readonly PagingSettings _pagingSettings;
@@ -35,6 +35,11 @@ namespace WPF_Starter.Services.Export
             _createRootElement = createRootElement;
             _pagingSettings = pagingSettings;
         }
+
+        /// <summary>
+        ///  Manages export state, create a xml file
+        ///  initializes and fills the file with data
+        /// </summary>
         public async Task Export()
         {
             _exportSettings.IsExporting = true;
@@ -44,17 +49,17 @@ namespace WPF_Starter.Services.Export
 
                 if(string.IsNullOrEmpty(_exportSettings.XmlFileName))
                 {
-                    InvalidPath?.Invoke();
+                    InvalidPath?.Invoke(this, EventArgs.Empty);
                     return;
                 }
 
                 _initializeXmlFile.InitializeFile(_exportSettings.XmlFileName);
                await Task.Run(() => _createRootElement.Fill(_dataBase, _exportSettings, _search, _paginator, _pagingSettings));
-                ExportCompleted?.Invoke();
+                ExportCompleted?.Invoke(this, EventArgs.Empty);
             }
             catch (Exception)
             {
-                ExportFailed?.Invoke();
+                ExportFailed?.Invoke(this, EventArgs.Empty);
             }
             finally
             {

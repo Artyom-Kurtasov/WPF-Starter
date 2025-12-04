@@ -3,6 +3,7 @@ using WPF_Starter.Services.DataBase;
 
 namespace WPF_Starter.Services.SearchServices
 {
+
     public class Search
     {
         private PeopleFormState FormState;
@@ -11,24 +12,30 @@ namespace WPF_Starter.Services.SearchServices
         {
             FormState = peopleFormState;
         }
+
+        /// <summary>
+        /// Do search People records in the database
+        /// applying filters from the form state
+        /// </summary>
         public IQueryable<People> SearchPeople(AppDbContext dataBase)
         {
-            var nameFilter = FormState.NameBoxText?.Trim().ToLower();
-            var surnameFilter = FormState.SurnameBoxText?.Trim().ToLower();
-            var patronymicFilter = FormState.PatronymicBoxText?.Trim().ToLower();
-            var cityFilter = FormState.CityBoxText?.Trim().ToLower();
-            var countryFilter = FormState.CountryBoxText?.Trim().ToLower();
+            String? nameFilter = FormState.NameBoxText?.Trim().ToLower();
+            String? surnameFilter = FormState.SurnameBoxText?.Trim().ToLower();
+            String? patronymicFilter = FormState.PatronymicBoxText?.Trim().ToLower();
+            String? cityFilter = FormState.CityBoxText?.Trim().ToLower();
+            String? countryFilter = FormState.CountryBoxText?.Trim().ToLower();
 
             DateTime? parsedDate = FormState.DateOfDatepicker;
 
             return dataBase.Person.Where(u =>
-                (FormState.DateOfDatepicker == null ||u.Date == parsedDate) &&
-                (string.IsNullOrEmpty(nameFilter) || u.Name.ToLower().Contains(nameFilter)) &&
-                (string.IsNullOrEmpty(surnameFilter) || u.Surname.ToLower().Contains(surnameFilter)) &&
-                (string.IsNullOrEmpty(patronymicFilter) || u.Patronymic.ToLower().Contains(patronymicFilter)) &&
-                (string.IsNullOrEmpty(cityFilter) || u.City.ToLower().Contains(cityFilter)) &&
-                (string.IsNullOrEmpty(countryFilter) || u.Country.ToLower().Contains(countryFilter))
+                (FormState.DateOfDatepicker == null || u.Date == parsedDate) &&
+                (string.IsNullOrEmpty(nameFilter) || u.Name.Contains(nameFilter, StringComparison.OrdinalIgnoreCase)) &&
+                (string.IsNullOrEmpty(surnameFilter) || u.Surname.Contains(surnameFilter, StringComparison.OrdinalIgnoreCase)) &&
+                (string.IsNullOrEmpty(patronymicFilter) || u.Patronymic.Contains(patronymicFilter, StringComparison.OrdinalIgnoreCase)) &&
+                (string.IsNullOrEmpty(cityFilter) || u.City.Contains(cityFilter, StringComparison.OrdinalIgnoreCase)) &&
+                (string.IsNullOrEmpty(countryFilter) || u.Country.Contains(countryFilter, StringComparison.OrdinalIgnoreCase))
             );
+
         }
 
     }

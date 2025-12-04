@@ -1,6 +1,5 @@
-﻿using System.Security.AccessControl;
-using System.Windows;
-using WPF_Starter.Services.Export;
+﻿using System.Windows;
+using WPF_Starter.Services.Export.Interfaces;
 using WPF_Starter.Services.MessageServices.Interfaces;
 
 namespace WPF_Starter.Services.Notifiers
@@ -8,10 +7,10 @@ namespace WPF_Starter.Services.Notifiers
     public class ExportNotifyer
     {
         private readonly IMessageBoxService _messageService;
-        private readonly ExportToExcel _exportToExcel;
-        private readonly ExportToXml _exportToXml;
+        private readonly IExportToExcel _exportToExcel;
+        private readonly IExportToXml _exportToXml;
 
-        public ExportNotifyer(IMessageBoxService messageBoxService, ExportToExcel exportToExcel, ExportToXml exportToXml)
+        public ExportNotifyer(IMessageBoxService messageBoxService, IExportToExcel exportToExcel, IExportToXml exportToXml)
         {
             _exportToExcel = exportToExcel;
             _messageService = messageBoxService;
@@ -21,7 +20,7 @@ namespace WPF_Starter.Services.Notifiers
             _exportToXml.ExportCompleted += OnExportCompleted;
         }
 
-        private void OnExportCompleted()
+        private void OnExportCompleted(object? sender, EventArgs e)
         {
             _messageService.ShowMessage("Export has been completed.",
                 "Success",

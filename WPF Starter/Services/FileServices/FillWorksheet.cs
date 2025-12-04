@@ -5,20 +5,25 @@ using WPF_Starter.Services.SearchServices;
 
 namespace WPF_Starter.Services.FileServices
 {
+    /// <summary>
+    /// Handles exporting People records to an Excel file
+    /// creates a workbook, writes headers, fills rows with data
+    /// splits data across multiple sheets if row limit is reached
+    /// </summary>
     public class FillWorksheet
     {
         public void Fill(AppDbContext dataBase, ExportSettings exportSettings, Search search, Paginator paginator, PagingSettings pagingSettings)
         {
-            using (var workbook = new XLWorkbook())
+            using (XLWorkbook? workbook = new XLWorkbook())
             {
                 int row = 2;
                 int sheetIndex = 1;
-                var worksheet = workbook.Worksheets.Add($"Data{sheetIndex}");
+                IXLWorksheet? worksheet = workbook.Worksheets.Add($"Data{sheetIndex}");
                 WriteHeaders(worksheet);
 
-                foreach (var batch in paginator.Pagenation(dataBase, pagingSettings, search.SearchPeople(dataBase)))
+                foreach (List<People>? batch in paginator.Pagenation(dataBase, pagingSettings, search.SearchPeople(dataBase)))
                 {
-                    foreach (var item in batch)
+                    foreach (People? item in batch)
                     {
                         worksheet.Cell(row, 1).Value = item.Date;
                         worksheet.Cell(row, 1).Style.DateFormat.Format = "dd.MM.yyyy";
@@ -51,6 +56,9 @@ namespace WPF_Starter.Services.FileServices
             worksheet.Cell(1, 4).Value = "Patronymic";
             worksheet.Cell(1, 5).Value = "City";
             worksheet.Cell(1, 6).Value = "Country";
+
+            worksheet.Columns().Width = 15;
+            worksheet.Rows().Height = 20;
         }
     }
 }
