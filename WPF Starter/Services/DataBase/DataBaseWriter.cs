@@ -7,11 +7,13 @@ namespace WPF_Starter.Services.DataBase
     {
         private readonly CsvParser _csvParser;
         private readonly ExportSettings _exportSettings;
+        private readonly PagingSettings _pagingSettings;
 
-        public DataBaseWriter(CsvParser csvParser, ExportSettings exportSettings)
+        public DataBaseWriter(CsvParser csvParser, ExportSettings exportSettings, PagingSettings pagingSettings)
         {
             _csvParser = csvParser;
             _exportSettings = exportSettings;
+            _pagingSettings = pagingSettings;
         }
         private void ClearDataBase(AppDbContext dataBase)
         {
@@ -27,7 +29,7 @@ namespace WPF_Starter.Services.DataBase
         {
             ClearDataBase(dataBase);
 
-            foreach (People[] batch in _csvParser.Parse(_exportSettings.CsvFilePath).Chunk(1000))
+           await foreach (People[] batch in _csvParser.Parse(_exportSettings.CsvFilePath, _pagingSettings.BlockSize).Chunk(1000))
             {
                 await dataBase.AddRangeAsync(batch);
                 await dataBase.SaveChangesAsync();

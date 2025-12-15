@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using MahApps.Metro.Controls;
+using Microsoft.Extensions.DependencyInjection;
 using System.Globalization;
 using System.IO;
 using System.Windows;
@@ -6,6 +7,7 @@ using WPF_Starter.Config;
 using WPF_Starter.Models;
 using WPF_Starter.Services.DataBase;
 using WPF_Starter.Services.Notifiers;
+
 
 namespace WPF_Starter
 {
@@ -16,6 +18,7 @@ namespace WPF_Starter
     {
         public static ServiceProvider? ServiceProvider { get; private set; }
 
+        public event EventHandler? LoadDataBaseFailed;
         public event EventHandler? FileNotFound;
         public event EventHandler? LoadFailed;
         public event EventHandler? LoadCompletedEvent;
@@ -27,16 +30,16 @@ namespace WPF_Starter
             ConfigureCulture();
             ConfigureServices();
 
-            InitializeMainWindow();
-
             SubscribeNotifiers();
+
+            InitializeMainWindow();
 
             await LoadStartupDataAsync();
         }
 
         private void ConfigureCulture()
         {
-            CultureInfo? culture = new CultureInfo("ru-RU");
+            CultureInfo? culture = new CultureInfo("en-EN");
             Thread.CurrentThread.CurrentCulture = culture;
             Thread.CurrentThread.CurrentUICulture = culture;
         }
@@ -46,6 +49,7 @@ namespace WPF_Starter
             IServiceCollection services = new ServiceCollection();
             Configure? configure = new Configure();
             configure.ConfigureServices(services);
+
 
             ServiceProvider = services.BuildServiceProvider();
         }
@@ -62,9 +66,15 @@ namespace WPF_Starter
             ErrorNotifier? errorNotifier = ServiceProvider!.GetRequiredService<ErrorNotifier>();
             DataBaseNotifier? dataBaseNotifier = ServiceProvider!.GetRequiredService<DataBaseNotifier>();
 
+            LoadDataBaseFailed += dataBaseNotifier.OnDataBaseLoadFailed;
             FileNotFound += errorNotifier.OnFileNotFound;
             LoadFailed += errorNotifier.OnErrorOccurred;
             LoadCompletedEvent += dataBaseNotifier.OnLoadCompleted;
+        }
+
+        private void App_LoadDB(object? sender, EventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         private async Task LoadStartupDataAsync()
@@ -82,6 +92,10 @@ namespace WPF_Starter
             catch (FileNotFoundException)
             {
                 FileNotFound?.Invoke(this, EventArgs.Empty);
+            }
+            catch (Microsoft.Data.SqlClient.SqlException)
+            {
+                LoadDataBaseFailed?.Invoke(this, EventArgs.Empty);
             }
             catch (Exception)
             {

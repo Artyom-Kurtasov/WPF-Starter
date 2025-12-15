@@ -27,6 +27,7 @@ namespace WPF_Starter.Models
         }
         public int Page { get; set; } = 0;
         public int PageSize { get; } = 1000;
+        public int BlockSize { get; } = 100;
 
         public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged(string propertyName) =>

@@ -1,4 +1,4 @@
-﻿using System.Windows;
+﻿using MahApps.Metro.Controls;
 using WPF_Starter.Models;
 using WPF_Starter.Services.DataBase;
 using WPF_Starter.Services.DataGridServices;
@@ -10,7 +10,7 @@ namespace WPF_Starter
     /// <summary>
     /// Логика взаимодействия для DataGridWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : MetroWindow
     {
         private readonly MainWindowViewModel _viewModel;
         private readonly PagingSettings _pagingSettings;

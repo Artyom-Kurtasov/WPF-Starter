@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using MahApps.Metro.Controls.Dialogs;
+using System.Windows;
 using WPF_Starter.Services.Export.Interfaces;
 using WPF_Starter.Services.MessageServices.Interfaces;
 
@@ -22,10 +23,9 @@ namespace WPF_Starter.Services.Notifiers
 
         private void OnExportCompleted(object? sender, EventArgs e)
         {
-            _messageService.ShowMessage("Export has been completed.",
-                "Success",
-                MessageBoxImage.Information,
-                MessageBoxButton.OK);
+            _messageService.ShowMessage("Success",
+                "Export has been completed.",
+                MessageDialogStyle.Affirmative);
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using System.ComponentModel;
+﻿using MahApps.Metro.Controls.Dialogs;
+using System.ComponentModel;
+using System.Windows;
 
 namespace WPF_Starter.Models
 {
@@ -14,6 +16,8 @@ namespace WPF_Starter.Models
                 OnPropertyChanged(nameof(IsLoading));
             }
         }
+
+        public MessageDialogResult MessageResult;
 
         public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged(string propertyName) => 

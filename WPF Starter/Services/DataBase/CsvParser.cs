@@ -21,17 +21,19 @@ namespace WPF_Starter.Services.DataBase
         /// splits row into cells
         /// ,aps the cells into People records
         /// </summary>
-        public IEnumerable<People> Parse(string filePath)
+        public async IAsyncEnumerable<People> Parse(string filePath, int blockSize)
         {
-            foreach (string? line in _csvFileReader.ReadLines(filePath))
+            await foreach (List<string?> block in _csvFileReader.ReadLines(filePath, blockSize))
             {
-                string[] cells = _csvRowParser.ParseRow(line);
-                if (cells == null) continue;
+                foreach (string? line in block)
+                {
+                    string[] cells = _csvRowParser.ParseRow(line);
+                    if (cells == null || cells.Length == 0) continue;
 
-                People? person = _peopleMapper.Map(cells);
-                if (person != null) yield return person;
+                    People? person = _peopleMapper.Map(cells);
+                    if (person != null) yield return person;
+                }
             }
         }
-
     }
 }

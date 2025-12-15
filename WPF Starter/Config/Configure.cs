@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using System.Configuration;
 using WPF_Starter.Models;
 using WPF_Starter.Services;
 using WPF_Starter.Services.DataBase;
@@ -27,7 +28,7 @@ namespace WPF_Starter.Config
         {
             //Data
             services.AddDbContext<AppDbContext>(options =>
-                options.UseSqlServer("Server=NINJA2077\\MSSQLCSV;Database=Person;Trusted_Connection=True;TrustServerCertificate=True;"));
+                options.UseSqlServer(ConfigurationManager.AppSettings["ConnectionString"]));
             services.AddSingleton<People>();
             services.AddSingleton<ExportSettings>();
             services.AddSingleton<PeopleFormState>();

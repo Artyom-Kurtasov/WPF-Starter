@@ -2,6 +2,8 @@
 using System.Windows;
 using WPF_Starter.Services.Import.Interfaces;
 using WPF_Starter.Services.Export.Interfaces;
+using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
 
 namespace WPF_Starter.Services.Notifiers
 {
@@ -31,27 +33,24 @@ namespace WPF_Starter.Services.Notifiers
 
         private void OnInvalidPath(object? sender, EventArgs e)
         {
-            _messageBoxService.ShowMessage("No path has been selected.",
-                "Error",
-                MessageBoxImage.Error,
-                MessageBoxButton.OK);
+            _messageBoxService.ShowMessage("Error",
+                "No path has been selected.",
+                MessageDialogStyle.Affirmative);
         }
 
         public void OnErrorOccurred(object? sender, EventArgs e)
         {
-            _messageBoxService.ShowMessage("Something went wrong. Please try again.",
-                "Error",
-                MessageBoxImage.Error,
-                MessageBoxButton.OK);
+            _messageBoxService.ShowMessage("Error",
+                "Something went wrong. Please try again.",
+                MessageDialogStyle.Affirmative);
         }
 
         public void OnFileNotFound(object? sender, EventArgs e)
         {
             _messageBoxService.ShowMessage(
+                                "Error",
                 "File not found. You can import it through the application.",
-                "Error",
-                MessageBoxImage.Error,
-                MessageBoxButton.OK);
+                MessageDialogStyle.Affirmative);
         }
     }
 }

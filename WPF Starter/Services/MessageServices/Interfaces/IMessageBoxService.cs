@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MahApps.Metro.Controls.Dialogs;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
@@ -7,6 +8,6 @@ namespace WPF_Starter.Services.MessageServices.Interfaces
 {
     public interface IMessageBoxService
     {
-        void ShowMessage(string message, string caption, MessageBoxImage image, MessageBoxButton button);
+        Task<MessageDialogResult> ShowMessage(string title, string message, MessageDialogStyle style);
     }
 }

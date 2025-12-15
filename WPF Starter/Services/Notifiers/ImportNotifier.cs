@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using MahApps.Metro.Controls.Dialogs;
+using System.Windows;
 using WPF_Starter.Services.Import.Interfaces;
 using WPF_Starter.Services.MessageServices.Interfaces;
 
@@ -19,10 +20,9 @@ namespace WPF_Starter.Services.Notifiers
 
         private void OnImportCompleted(object? sender, EventArgs e)
         {
-            _messageBoxService.ShowMessage("Import has been completed.",
-               "Success",
-               MessageBoxImage.Information,
-               MessageBoxButton.OK);
+            _messageBoxService.ShowMessage("Success", 
+               "Import has been completed.",
+               MessageDialogStyle.Affirmative);
         }
     }
 }

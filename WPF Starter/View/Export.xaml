@@ -1,4 +1,5 @@
-﻿<Window x:Class="WPF_Starter.View.Export"
+﻿<mah:MetroWindow   x:Class="WPF_Starter.View.Export"
+        xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -7,9 +8,9 @@
         mc:Ignorable="d"
         Title="ExportToExcel" Height="400" Width="259"
         ResizeMode="CanMinimize">
-    <Window.Resources>
+    <mah:MetroWindow.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
-    </Window.Resources>
+    </mah:MetroWindow.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -33,18 +34,15 @@
             </Grid.ColumnDefinitions>
 
             <TextBlock Grid.Row="0" Grid.Column="0" Text="Date"/>
-            <DatePicker Grid.Row="1" Grid.Column="0" Height="24"
-                        SelectedDate="{Binding PeopleFormState.DateOfDatepicker, Mode=TwoWay}">
-                <DatePicker.Resources>
-                    <Style TargetType="DatePickerTextBox">
-                        <Setter Property="IsReadOnly" Value="True">
-                            
-                        </Setter>
-                    </Style>
-                </DatePicker.Resources>
-            </DatePicker>
+
             <Button Grid.Row="1" Grid.Column="1" Content="🗑️"
                     Command="{Binding ClearCommands.ClearDatePickerCommand}" Height="24"/>
+            <mah:DateTimePicker HorizontalAlignment="Center" 
+                                Grid.Row="1" 
+                                VerticalAlignment="Center" 
+                                Width="208"
+                                IsClockVisible="false">
+            </mah:DateTimePicker>
         </Grid>
 
         <Grid Grid.Row="1" Margin="5">
@@ -140,4 +138,4 @@
                      IsIndeterminate="True"
                      Visibility="{Binding ExportSettings.IsExporting, Converter={StaticResource BoolToVisibilityConverter}}"/>
     </Grid>
-</Window>
+</mah:MetroWindow>
