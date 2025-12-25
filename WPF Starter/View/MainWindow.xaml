@@ -1,11 +1,19 @@
-﻿<mah:MetroWindow  xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls" x:Class="WPF_Starter.MainWindow"
+﻿<mah:MetroWindow  xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls" 
+                  x:Class="WPF_Starter.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPF_Starter"
-        mc:Ignorable="d"
-        Title="DataGridWindow" Height="450" Width="800">
+        xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
+        Dialog:DialogParticipation.Register="{Binding}"
+        mc:Ignorable="d" Height="395" Width="761"
+        Title="Main" TitleCharacterCasing="Normal">
+    <mah:MetroWindow.LeftWindowCommands>
+        <mah:WindowCommands>
+            <Image Source="/View/cat.png"/>
+        </mah:WindowCommands>
+    </mah:MetroWindow.LeftWindowCommands>
     <mah:MetroWindow.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
     </mah:MetroWindow.Resources>
@@ -17,8 +25,9 @@
         </Grid.RowDefinitions>
 
         <Menu Grid.Row="0">
-            <MenuItem Header="Export" Command="{Binding NavigationCommands.ShowExportForm}"/>
+            <MenuItem Header="Export" Command="{Binding NavigationCommands.ShowExportWindow}"/>
             <MenuItem Header="Import csv" Command="{Binding ImportCommands.ImportCommand}"/>
+            <MenuItem Header="Settings" Command="{Binding NavigationCommands.ShowSettingsWindow}"/>
             <MenuItem Header="Exit" Command="{Binding NavigationCommands.ExitApp}"/>
         </Menu>
 
@@ -42,15 +51,11 @@
         </DataGrid>
 
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
-            <Button Content="Назад" Margin="5" Command="{Binding NavigationCommands.GetPreviosPage}"/>
+            <Button Content="Prev" Margin="5" Command="{Binding NavigationCommands.GetPreviosPage}"
+                    Style="{DynamicResource MahApps.Styles.Button.Square.Accent}"/>
             <TextBlock x:Name="PageIndicator" VerticalAlignment="Center" Margin="5" Text="{Binding PagingSettings.PageIndicator}"/>
-            <Button Content="Вперёд" Margin="5" Command="{Binding NavigationCommands.GetNextPage}"/>
+            <Button Content="Next" Margin="5" Command="{Binding NavigationCommands.GetNextPage}"
+                    Style="{DynamicResource MahApps.Styles.Button.Square.Accent}"/>
         </StackPanel>
-        <ProgressBar 
-                     x:Name="ProgressBar" HorizontalAlignment="Left" Height="10" 
-                     Margin="27,0,0,0" Grid.Row="2" 
-                     VerticalAlignment="Center" Width="100"
-                     IsIndeterminate="True"
-                     Visibility="{Binding LoadingState.IsLoading, Converter={StaticResource BoolToVisibilityConverter}}"/>
     </Grid>
 </mah:MetroWindow>

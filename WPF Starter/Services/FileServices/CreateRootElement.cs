@@ -12,10 +12,12 @@ namespace WPF_Starter.Services.FileServices
         /// Creates new xml file
         /// add data to the file and saves changes
         /// </summary>
-        public void Fill(AppDbContext dataBase, ExportSettings exportSettings, Search search, Paginator paginator, PagingSettings pagingSettings)
+        public void Fill(AppDbContext dataBase, ExportSettings exportSettings, Search search, Paginator paginator, PagingSettings pagingSettings,
+            Action<long> progressAction)
         {
             XDocument doc = new XDocument(new XElement("TestProgram"));
 
+            int processed = 0;
             int idCounter = 1;
 
             foreach (List<People> batch in paginator.Pagenation(dataBase, pagingSettings, search.SearchPeople(dataBase)))
@@ -33,6 +35,10 @@ namespace WPF_Starter.Services.FileServices
                     );
 
                     doc.Root.Add(recordElement);
+
+                    processed++;
+                    if (processed % 100 == 0)
+                        progressAction?.Invoke(processed);
                 }
             }
 

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WPF_Starter.Models;
+using WPF_Starter.Services.MessageServices.Interfaces;
 
 namespace WPF_Starter.Services.DataBase
 {
@@ -25,11 +26,11 @@ namespace WPF_Starter.Services.DataBase
         /// parses a csv file
         /// add and save changes to the database
         /// </summary>
-        public async Task SaveAsync(AppDbContext dataBase)
+        public async Task SaveAsync(AppDbContext dataBase, Action<long> progressAction)
         {
-            ClearDataBase(dataBase);
+           ClearDataBase(dataBase);
 
-           await foreach (People[] batch in _csvParser.Parse(_exportSettings.CsvFilePath, _pagingSettings.BlockSize).Chunk(1000))
+           await foreach (People[] batch in _csvParser.Parse(_exportSettings.CsvFilePath, _pagingSettings.BlockSize, int.Parse(_exportSettings.BufferSize), progressAction).Chunk(1000))
             {
                 await dataBase.AddRangeAsync(batch);
                 await dataBase.SaveChangesAsync();

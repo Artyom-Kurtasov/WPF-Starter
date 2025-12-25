@@ -1,9 +1,48 @@
-﻿using System.ComponentModel;
+﻿using WPF_Starter.Config.Settings;
+using WPF_Starter.Services;
 
 namespace WPF_Starter.Models
 {
-    public class ExportSettings : INotifyPropertyChanged
+    public class ExportSettings : PropertyChangedEvent
     {
+        private UserSettings? _userSettings;
+
+        public ExportSettings(UserSettings? userSettings)
+        {
+            _userSettings = userSettings;
+        }
+
+        private string _bufferSize = UserSettings.Default.BufferSize.ToString();
+        public string BufferSize
+        {
+            get => _bufferSize;
+            set
+            {
+                _bufferSize = value;
+
+                OnPropertyChanged(nameof(BufferSize));
+
+                if (int.TryParse(value, out var parsed) && parsed > 0)
+                {
+                    _userSettings!.BufferSize = parsed;
+                    _userSettings.Save();
+                }
+            }
+        }
+        private int _maxExcelRows = UserSettings.Default.MaxExcelRows;
+        public int MaxExcelRows
+        {
+            get => _maxExcelRows;
+            set
+            {
+                _maxExcelRows = value;
+                OnPropertyChanged(nameof(MaxExcelRows));
+
+                _userSettings?.MaxExcelRows = value;
+                _userSettings?.Save();
+            }
+        }
+
         private bool _isExporting;
         public bool IsExporting
         {
@@ -14,14 +53,8 @@ namespace WPF_Starter.Models
                 OnPropertyChanged(nameof(IsExporting));
             }
         }
-        public int MaxExcelRows { get; private set; } = 1048576;
-        public string? ExcelFileName { get; set; } = null;
         public string? CsvFilePath { get; set; } = "people.csv";
+        public string? ExcelFileName { get; set; } = null;
         public string? XmlFileName { get; set; } = null;
-
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-        protected void OnPropertyChanged(string propertyName) =>
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

@@ -1,0 +1,138 @@
+﻿<mah:MetroWindow xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+                 x:Class="WPF_Starter.View.SettingsWindow"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:local="clr-namespace:WPF_Starter.View"
+                 xmlns:core="clr-namespace:WPF_Starter.Services.ValidationRules"
+                 xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
+                 Dialog:DialogParticipation.Register="{Binding}"
+                 mc:Ignorable="d"
+                 Title="Settings" TitleCharacterCasing="Normal"
+                 Height="540" Width="780"
+                 WindowStartupLocation="CenterOwner"
+                 ResizeMode="CanResizeWithGrip">
+
+    <mah:MetroWindow.LeftWindowCommands>
+        <mah:WindowCommands>
+            <Image Source="/View/cat.png"/>
+        </mah:WindowCommands>
+    </mah:MetroWindow.LeftWindowCommands>
+
+    <Grid Margin="25">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Margin="0,0,0,20">
+            <TextBlock Text="Block Size" 
+                       FontWeight="SemiBold" FontSize="14"/>
+            <TextBlock Text="Number of CSV rows read per block. Minimum: 1" 
+                       Foreground="Gray" FontSize="12" Margin="0,2,0,8"/>
+            <TextBox x:Name="BlockSizeSetting" Width="180" Height="28" HorizontalAlignment="Left"
+                     mah:TextBoxHelper.ClearTextButton="True"
+                     mah:TextBoxHelper.Watermark="Minimum 1"
+                     VerticalContentAlignment="Center">
+                <TextBox.Text>
+                    <Binding Path="PagingSettings.BlockSize" 
+                             UpdateSourceTrigger="LostFocus" 
+                             ValidatesOnDataErrors="True">
+                        <Binding.ValidationRules>
+                            <core:Validator/>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+        </StackPanel>
+
+        <StackPanel Grid.Row="1" Margin="0,0,0,20">
+            <TextBlock Text="Buffer Size" 
+                       FontWeight="SemiBold" FontSize="14"/>
+            <TextBlock Text="Buffer size in bytes for reading CSV files. Recommended minimum: 1024" 
+                       Foreground="Gray" FontSize="12" Margin="0,2,0,8"/>
+            <TextBox x:Name="BufferSizeSetting" Width="180" Height="28" HorizontalAlignment="Left"
+                     mah:TextBoxHelper.ClearTextButton="True"
+                     mah:TextBoxHelper.Watermark="Minimum 1024"
+                     VerticalContentAlignment="Center">
+                <TextBox.Text>
+                    <Binding Path="ExportSettings.BufferSize" 
+                             UpdateSourceTrigger="LostFocus" 
+                             ValidatesOnDataErrors="True">
+                        <Binding.ValidationRules>
+                            <core:Validator/>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+        </StackPanel>
+
+        <StackPanel Grid.Row="2" Margin="0,0,0,20">
+            <TextBlock Text="Max Excel Rows" 
+                       FontWeight="SemiBold" FontSize="14"/>
+            <TextBlock Text="Maximum rows allowed when exporting to Excel. Default limit: 1,048,576" 
+                       Foreground="Gray" FontSize="12" Margin="0,2,0,8"/>
+            <TextBox x:Name="MaxExcelRowsSetting" Width="180" Height="28" HorizontalAlignment="Left"
+                     mah:TextBoxHelper.ClearTextButton="True"
+                     mah:TextBoxHelper.Watermark="Minimum 1"
+                     VerticalContentAlignment="Center">
+                <TextBox.Text>
+                    <Binding Path="ExportSettings.MaxExcelRows" 
+                             UpdateSourceTrigger="LostFocus" 
+                             ValidatesOnDataErrors="True">
+                        <Binding.ValidationRules>
+                            <core:Validator/>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+        </StackPanel>
+
+        <StackPanel Grid.Row="3" Margin="0,0,0,20">
+            <TextBlock Text="Page Size" 
+                       FontWeight="SemiBold" FontSize="14"/>
+            <TextBlock Text="Number of rows displayed per page in the UI. Minimum: 1" 
+                       Foreground="Gray" FontSize="12" Margin="0,2,0,8"/>
+            <TextBox x:Name="PageSizeSetting" Width="180" Height="28" HorizontalAlignment="Left"
+                     mah:TextBoxHelper.ClearTextButton="True"
+                     mah:TextBoxHelper.Watermark="Minimum 1"
+                     VerticalContentAlignment="Center">
+                <TextBox.Text>
+                    <Binding Path="PagingSettings.PageSize" 
+                             UpdateSourceTrigger="LostFocus" 
+                             ValidatesOnDataErrors="True">
+                        <Binding.ValidationRules>
+                            <core:Validator/>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+        </StackPanel>
+
+        <StackPanel Grid.Row="4">
+            <TextBlock Text="Connection String" 
+                       FontWeight="SemiBold" FontSize="14"/>
+            <TextBlock Text="Database connection string (server, database, authentication settings)" 
+                       Foreground="Gray" FontSize="12" Margin="0,2,0,8"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBox x:Name="ConnectionStringSetting" Height="28" VerticalContentAlignment="Center"
+                         mah:TextBoxHelper.ClearTextButton="True"
+                         Text="{Binding ConnectionStringValidator.ConnectionString, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+
+                <Button Grid.Column="1" Margin="12,0,0,0" Width="140" Height="28"
+                        Content="Test string and save"
+                        Style="{DynamicResource MahApps.Styles.Button.Square.Accent}"
+                        Command="{Binding SettingCommands.TestConnection}"/>
+            </Grid>
+        </StackPanel>
+    </Grid>
+</mah:MetroWindow>

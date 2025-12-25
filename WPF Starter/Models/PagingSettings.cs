@@ -1,11 +1,21 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.ObjectModel;
+using WPF_Starter.Config.Settings;
+using WPF_Starter.Services;
+
 
 namespace WPF_Starter.Models
 {
-    public class PagingSettings : INotifyPropertyChanged
+    public class PagingSettings : PropertyChangedEvent
     {
-        private List<People>? _gridPeoples;
-        public List<People>? GridPeoples
+        private UserSettings _userSettings;
+
+        public PagingSettings(UserSettings userSettings)
+        {
+            _userSettings = userSettings;
+        }
+
+        private ObservableCollection<People>? _gridPeoples;
+        public ObservableCollection<People>? GridPeoples
         {
             get => _gridPeoples;
             set
@@ -26,11 +36,36 @@ namespace WPF_Starter.Models
             }
         }
         public int Page { get; set; } = 0;
-        public int PageSize { get; } = 1000;
-        public int BlockSize { get; } = 100;
 
-        public event PropertyChangedEventHandler? PropertyChanged;
-        protected void OnPropertyChanged(string propertyName) =>
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        private int _pageSize = UserSettings.Default.PageSize;
+        public int PageSize
+        {
+            get => _pageSize;
+            set
+            {
+                if (_pageSize != value)
+                {
+                    _pageSize = value;            
+                    OnPropertyChanged(nameof(PageSize));
+
+                    _userSettings.PageSize = value;
+                    _userSettings.Save();
+                }
+            }
+        }
+
+        private int _blockSize  = UserSettings.Default.BlockSize;
+        public int BlockSize
+        {
+            get => _blockSize;
+            set
+            {
+                _blockSize = value;
+                OnPropertyChanged(nameof(BlockSize));
+
+                _userSettings.BlockSize = value;
+                _userSettings.Save();
+            }
+        }
     }
 }

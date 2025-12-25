@@ -1,4 +1,5 @@
-﻿using WPF_Starter.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using WPF_Starter.Models;
 using WPF_Starter.Services.DataBase;
 
 namespace WPF_Starter.Services.SearchServices
@@ -16,6 +17,7 @@ namespace WPF_Starter.Services.SearchServices
             while (true)
             {
                 List<People> batch = query
+                    .AsNoTracking()
                     .Skip(pagingSettings.Page * pagingSettings.PageSize)
                     .Take(pagingSettings.PageSize)
                     .ToList();

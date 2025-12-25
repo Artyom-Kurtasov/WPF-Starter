@@ -1,141 +1,117 @@
-﻿<mah:MetroWindow   x:Class="WPF_Starter.View.Export"
-        xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:WPF_Starter.View"
-        mc:Ignorable="d"
-        Title="ExportToExcel" Height="400" Width="259"
-        ResizeMode="CanMinimize">
+﻿<mah:MetroWindow x:Class="WPF_Starter.View.Export"
+                 xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:local="clr-namespace:WPF_Starter.View"
+                 xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
+                 Dialog:DialogParticipation.Register="{Binding}"
+                 mc:Ignorable="d"
+                 Title="Export" TitleCharacterCasing="Normal"
+                 Height="735" Width="380" 
+                 ResizeMode="CanMinimize"
+                 WindowStartupLocation="CenterOwner"
+                 BorderThickness="1">
+    <mah:MetroWindow.LeftWindowCommands>
+        <mah:WindowCommands>
+            <Image Source="/View/cat.png"/>
+        </mah:WindowCommands>
+    </mah:MetroWindow.LeftWindowCommands>
     <mah:MetroWindow.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
     </mah:MetroWindow.Resources>
-    <Grid>
+
+    <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0" Margin="5">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="30"/>
-            </Grid.ColumnDefinitions>
+        <TextBlock Grid.Row="0" Text="Export to Excel or XML" 
+                   FontSize="16" FontWeight="SemiBold" Margin="0,0,0,20"
+                   HorizontalAlignment="Center"/>
 
-            <TextBlock Grid.Row="0" Grid.Column="0" Text="Date"/>
+        <GroupBox Grid.Row="1" Header="Filter Criteria" 
+                  Margin="0,0,0,20" Padding="10">
+            <StackPanel>
 
-            <Button Grid.Row="1" Grid.Column="1" Content="🗑️"
-                    Command="{Binding ClearCommands.ClearDatePickerCommand}" Height="24"/>
-            <mah:DateTimePicker HorizontalAlignment="Center" 
-                                Grid.Row="1" 
-                                VerticalAlignment="Center" 
-                                Width="208"
-                                IsClockVisible="false">
-            </mah:DateTimePicker>
-        </Grid>
+                <StackPanel Margin="0,0,0,12">
+                    <TextBlock Text="Date" FontWeight="Medium"/>
+                    <TextBlock Text="Select the date for export (optional)" 
+                               Foreground="Gray" FontSize="11" Margin="0,2,0,4"/>
+                    <DatePicker mah:TextBoxHelper.Watermark="Select date" Height="28"
+                                SelectedDate="{Binding PeopleFormState.DateOfDatepicker, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                Focusable="False"/>
+                </StackPanel>
 
-        <Grid Grid.Row="1" Margin="5">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="30"/>
-            </Grid.ColumnDefinitions>
+                <StackPanel Margin="0,0,0,12">
+                    <TextBlock Text="Name" FontWeight="Medium"/>
+                    <TextBlock Text="Filter by first name" 
+                               Foreground="Gray" FontSize="11" Margin="0,2,0,4"/>
+                    <TextBox Height="28" 
+                             Text="{Binding PeopleFormState.NameBoxText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             mah:TextBoxHelper.Watermark="Enter name"
+                             mah:TextBoxHelper.ClearTextButton="True"/>
+                </StackPanel>
 
-            <TextBlock Grid.Row="0" Grid.Column="0" Text="Name"/>
-            <TextBox Grid.Row="1" Grid.Column="0" Height="22"
-                     Text="{Binding PeopleFormState.NameBoxText, Mode=TwoWay}"/>
-            <Button Grid.Row="1" Grid.Column="1" Content="🗑️"
-                    Command="{Binding ClearCommands.ClearNameCommand}"/>
-        </Grid>
+                <StackPanel Margin="0,0,0,12">
+                    <TextBlock Text="Surname" FontWeight="Medium"/>
+                    <TextBlock Text="Filter by last name" 
+                               Foreground="Gray" FontSize="11" Margin="0,2,0,4"/>
+                    <TextBox Height="28" 
+                             Text="{Binding PeopleFormState.SurnameBoxText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             mah:TextBoxHelper.Watermark="Enter surname"
+                             mah:TextBoxHelper.ClearTextButton="True"/>
+                </StackPanel>
 
-        <Grid Grid.Row="2" Margin="5">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="30"/>
-            </Grid.ColumnDefinitions>
+                <StackPanel Margin="0,0,0,12">
+                    <TextBlock Text="Patronymic" FontWeight="Medium"/>
+                    <TextBlock Text="Middle name or patronymic" 
+                               Foreground="Gray" FontSize="11" Margin="0,2,0,4"/>
+                    <TextBox Height="28" 
+                             Text="{Binding PeopleFormState.PatronymicBoxText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             mah:TextBoxHelper.Watermark="Enter patronymic"
+                             mah:TextBoxHelper.ClearTextButton="True"/>
+                </StackPanel>
 
-            <TextBlock Grid.Row="0" Grid.Column="0" Text="Surname"/>
-            <TextBox Grid.Row="1" Grid.Column="0" Height="22"
-                     Text="{Binding PeopleFormState.SurnameBoxText, Mode=TwoWay}"/>
-            <Button Grid.Row="1" Grid.Column="1" Content="🗑️"
-                    Command="{Binding ClearCommands.ClearSurnameCommand}"/>
-        </Grid>
+                <StackPanel Margin="0,0,0,12">
+                    <TextBlock Text="City" FontWeight="Medium"/>
+                    <TextBlock Text="Filter by city" 
+                               Foreground="Gray" FontSize="11" Margin="0,2,0,4"/>
+                    <TextBox Height="28" 
+                             Text="{Binding PeopleFormState.CityBoxText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             mah:TextBoxHelper.Watermark="Enter city"
+                             mah:TextBoxHelper.ClearTextButton="True"/>
+                </StackPanel>
 
-        <Grid Grid.Row="3" Margin="5">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="30"/>
-            </Grid.ColumnDefinitions>
+                <StackPanel Margin="0,0,0,0">
+                    <TextBlock Text="Country" FontWeight="Medium"/>
+                    <TextBlock Text="Filter by country" 
+                               Foreground="Gray" FontSize="11" Margin="0,2,0,4"/>
+                    <TextBox Height="28" 
+                             Text="{Binding PeopleFormState.CountryBoxText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             mah:TextBoxHelper.Watermark="Enter country"
+                             mah:TextBoxHelper.ClearTextButton="True"/>
+                </StackPanel>
 
-            <TextBlock Grid.Row="0" Grid.Column="0" Text="Patronymic"/>
-            <TextBox Grid.Row="1" Grid.Column="0" Height="22"
-                     Text="{Binding PeopleFormState.PatronymicBoxText, Mode=TwoWay}"/>
-            <Button Grid.Row="1" Grid.Column="1" Content="🗑️"
-                    Command="{Binding ClearCommands.ClearPatronymicCommand}"/>
-        </Grid>
+            </StackPanel>
+        </GroupBox>
 
-        <Grid Grid.Row="4" Margin="5">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="30"/>
-            </Grid.ColumnDefinitions>
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,10">
+            <Button Content="Export to Excel" 
+                    Width="140" Height="32"
+                    Command="{Binding ExportCommands.ExportToExcelFile}"
+                    Margin="0,0,10,0"
+                    Style="{DynamicResource MahApps.Styles.Button.Square.Accent}"
+                    mah:ControlsHelper.FocusBorderBrush="#FF76A6E8"/>
 
-            <TextBlock Grid.Row="0" Grid.Column="0" Text="City"/>
-            <TextBox Grid.Row="1" Grid.Column="0" Height="22"
-                     Text="{Binding PeopleFormState.CityBoxText, Mode=TwoWay}"/>
-            <Button Grid.Row="1" Grid.Column="1" Content="🗑️"
-                    Command="{Binding ClearCommands.ClearCityCommand}"/>
-        </Grid>
-
-        <Grid Grid.Row="5" Margin="5">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="30"/>
-            </Grid.ColumnDefinitions>
-
-            <TextBlock Grid.Row="0" Grid.Column="0" Text="Country"/>
-            <TextBox Grid.Row="1" Grid.Column="0" Height="22"
-                     Text="{Binding PeopleFormState.CountryBoxText, Mode=TwoWay}"/>
-            <Button Grid.Row="1" Grid.Column="1" Content="🗑️"
-                    Command="{Binding ClearCommands.ClearCountryCommand}"/>
-        </Grid>
-
-        <StackPanel Grid.Row="6" Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
-            <Button Content="Export to Excel" Command="{Binding ExportCommands.ExportToExcelFile}" Margin="5"/>
-            <Button Content="Export to Xml" Command="{Binding ExportCommands.ExportToXmlFile}" Margin="5"/>
+            <Button Content="Export to XML" 
+                    Width="140" Height="32"
+                    Command="{Binding ExportCommands.ExportToXmlFile}"
+                    Style="{DynamicResource MahApps.Styles.Button.Square}"/>
         </StackPanel>
-        <ProgressBar HorizontalAlignment="Center" Height="10" Margin="0,0,0,0" Grid.Row="7" VerticalAlignment="Top" Width="100"
-                     IsIndeterminate="True"
-                     Visibility="{Binding ExportSettings.IsExporting, Converter={StaticResource BoolToVisibilityConverter}}"/>
     </Grid>
 </mah:MetroWindow>

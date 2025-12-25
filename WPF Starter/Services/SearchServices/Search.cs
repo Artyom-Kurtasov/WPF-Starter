@@ -29,11 +29,11 @@ namespace WPF_Starter.Services.SearchServices
 
             return dataBase.Person.Where(u =>
                 (FormState.DateOfDatepicker == null || u.Date == parsedDate) &&
-                (string.IsNullOrEmpty(nameFilter) || u.Name.Contains(nameFilter, StringComparison.OrdinalIgnoreCase)) &&
-                (string.IsNullOrEmpty(surnameFilter) || u.Surname.Contains(surnameFilter, StringComparison.OrdinalIgnoreCase)) &&
-                (string.IsNullOrEmpty(patronymicFilter) || u.Patronymic.Contains(patronymicFilter, StringComparison.OrdinalIgnoreCase)) &&
-                (string.IsNullOrEmpty(cityFilter) || u.City.Contains(cityFilter, StringComparison.OrdinalIgnoreCase)) &&
-                (string.IsNullOrEmpty(countryFilter) || u.Country.Contains(countryFilter, StringComparison.OrdinalIgnoreCase))
+                (string.IsNullOrEmpty(nameFilter) || u.Name.Contains(nameFilter)) &&
+                (string.IsNullOrEmpty(surnameFilter) || u.Surname.Contains(surnameFilter)) &&
+                (string.IsNullOrEmpty(patronymicFilter) || u.Patronymic.Contains(patronymicFilter)) &&
+                (string.IsNullOrEmpty(cityFilter) || u.City.Contains(cityFilter)) &&
+                (string.IsNullOrEmpty(countryFilter) || u.Country.Contains(countryFilter))
             );
 
         }

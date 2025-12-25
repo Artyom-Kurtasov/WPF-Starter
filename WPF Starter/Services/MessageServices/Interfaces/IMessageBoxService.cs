@@ -8,6 +8,7 @@ namespace WPF_Starter.Services.MessageServices.Interfaces
 {
     public interface IMessageBoxService
     {
-        Task<MessageDialogResult> ShowMessage(string title, string message, MessageDialogStyle style);
+        Task<MessageDialogResult> ShowMessageAsync(string title, string message, MessageDialogStyle style = MessageDialogStyle.Affirmative);
+        Task ShowProgressAsync(string title, string message, Func<ProgressDialogController, Task> action, bool isCancelable);
     }
 }

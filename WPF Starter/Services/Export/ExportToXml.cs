@@ -1,8 +1,11 @@
-﻿using WPF_Starter.Models;
+﻿using Microsoft.Extensions.Logging;
+using WPF_Starter.Models;
 using WPF_Starter.Services.DataBase;
 using WPF_Starter.Services.DialogServices.Interfaces;
 using WPF_Starter.Services.Export.Interfaces;
 using WPF_Starter.Services.FileServices;
+using WPF_Starter.Services.Logging;
+using WPF_Starter.Services.MessageServices.Interfaces;
 using WPF_Starter.Services.SearchServices;
 
 namespace WPF_Starter.Services.Export
@@ -13,7 +16,7 @@ namespace WPF_Starter.Services.Export
         public event EventHandler? ExportFailed;
         public event EventHandler? InvalidPath;
 
-
+        private readonly FileLogger _fileLogger;
         private readonly PagingSettings _pagingSettings;
         private readonly Paginator _paginator;
         private readonly Search _search;
@@ -22,9 +25,11 @@ namespace WPF_Starter.Services.Export
         private readonly ExportSettings _exportSettings;
         private readonly InitializeXmlFile _initializeXmlFile;
         private readonly IFileDialogService _fileDialogServices;
+        private readonly IMessageBoxService _messageService;
 
         public ExportToXml(IFileDialogService fileDialogServices, InitializeXmlFile initializeXmlFile, ExportSettings exportSettings, CreateRootElement createRootElement,
-            AppDbContext dataBase, Search search, Paginator paginator, PagingSettings pagingSettings)
+            AppDbContext dataBase, Search search, Paginator paginator, 
+            PagingSettings pagingSettings, IMessageBoxService messageBoxService, FileLogger fileLogger)
         {
             _fileDialogServices = fileDialogServices;
             _initializeXmlFile = initializeXmlFile;
@@ -34,6 +39,8 @@ namespace WPF_Starter.Services.Export
             _paginator = paginator;
             _createRootElement = createRootElement;
             _pagingSettings = pagingSettings;
+            _messageService = messageBoxService;
+            _fileLogger = fileLogger;
         }
 
         /// <summary>
@@ -42,29 +49,36 @@ namespace WPF_Starter.Services.Export
         /// </summary>
         public async Task Export()
         {
-            _exportSettings.IsExporting = true;
-            try
+            await _messageService.ShowProgressAsync("Export to XML", "Exporting data, please wait...", async controller =>
             {
-                _exportSettings.XmlFileName = _fileDialogServices.CreateFile("XML Files|*.xml", "Choose Xml file");
-
-                if(string.IsNullOrEmpty(_exportSettings.XmlFileName))
+                try
                 {
-                    InvalidPath?.Invoke(this, EventArgs.Empty);
-                    return;
-                }
+                    _exportSettings.IsExporting = true;
+                    _exportSettings.XmlFileName = _fileDialogServices.CreateFile("XML Files|*.xml", "Choose Xml file");
 
-                _initializeXmlFile.InitializeFile(_exportSettings.XmlFileName);
-               await Task.Run(() => _createRootElement.Fill(_dataBase, _exportSettings, _search, _paginator, _pagingSettings));
-                ExportCompleted?.Invoke(this, EventArgs.Empty);
-            }
-            catch (Exception)
-            {
-                ExportFailed?.Invoke(this, EventArgs.Empty);
-            }
-            finally
-            {
-                _exportSettings.IsExporting = false;
-            }
+                    if (string.IsNullOrEmpty(_exportSettings.XmlFileName))
+                    {
+                        InvalidPath?.Invoke(this, EventArgs.Empty);
+                        return;
+                    }
+
+                    _initializeXmlFile.InitializeFile(_exportSettings.XmlFileName);
+                    await Task.Run(() => _createRootElement.Fill(_dataBase, _exportSettings, _search, _paginator, _pagingSettings,
+                        count => controller.SetMessage($"Processed {count:N0} rows")));
+                    ExportCompleted?.Invoke(this, EventArgs.Empty);
+                }
+                catch (Exception ex)
+                {
+                    _fileLogger.LogError(ex.Message);
+                    ExportFailed?.Invoke(this, EventArgs.Empty);
+                }
+                finally
+                {
+                    _exportSettings.IsExporting = false;
+                }
+            }, false);
+
+           
         }
     }
 }

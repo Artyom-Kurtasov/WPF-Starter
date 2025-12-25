@@ -1,4 +1,5 @@
-﻿using WPF_Starter.Models;
+﻿using System.Collections.ObjectModel;
+using WPF_Starter.Models;
 using WPF_Starter.Services.DataBase;
 using WPF_Starter.Services.DataGridServices;
 using WPF_Starter.Services.SearchServices;
@@ -20,6 +21,6 @@ namespace WPF_Starter.Config
             _dataGridManager = dataGridManager;
         }
 
-        public List<People> GetPage() => _dataGridManager.GetPage(_appDbContext, _pagingSettings, _search);
+        public ObservableCollection<People> GetPage() => _dataGridManager.GetPage(_appDbContext, _pagingSettings, _search);
     }
 }

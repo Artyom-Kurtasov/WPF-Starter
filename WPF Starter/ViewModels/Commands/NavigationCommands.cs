@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System.Windows;
 using System.Windows.Input;
-using WPF_Starter.Config;
+using WPF_Starter.Config.Initialization;
 using WPF_Starter.Models;
 using WPF_Starter.Services.DataBase;
 using WPF_Starter.Services.DataGridServices;
@@ -16,50 +16,29 @@ namespace WPF_Starter.ViewModels.Commands
         private readonly AppDbContext _appDbContext;
         private readonly Search _search;
         private readonly PagingSettings _pagingSettings;
-        private readonly LoadingState _loadingState;
         private readonly DataGridManager _dataGridManager;
         private readonly ExportSettings _exportSettings;
-        public ICommand ShowExportForm { get; }
+        public ICommand ShowSettingsWindow { get; }
+        public ICommand ShowExportWindow { get; }
         public ICommand GetNextPage { get; }
         public ICommand GetPreviosPage { get; }
         public ICommand ExitApp { get; }
 
-        public NavigationCommands(LoadingState loadingState, PagingSettings pagingSettings,
+        public NavigationCommands(PagingSettings pagingSettings,
             AppDbContext appDbContext, Search search, DataGridManager dataGridManager, ExportSettings exportSettings, IServiceProvider services)
         {
-            ShowExportForm = new RelayCommand(ShowExportFormExecute, CanShowExportForm);
+            ShowSettingsWindow = new RelayCommand(ShowSettingsWindowExecute, CanShowSettingsWindow);
+            ShowExportWindow = new RelayCommand(ShowExportFormExecute, CanShowExportForm);
             GetNextPage = new RelayCommand(SetNextPage, CanSetNextPage);
             GetPreviosPage = new RelayCommand(SetPreviosPage, CanSetPreviosPage);
             ExitApp = new RelayCommand(Exit, CanExit);
 
-            _loadingState = loadingState;
             _pagingSettings = pagingSettings;
             _appDbContext = appDbContext;
             _search = search;
             _dataGridManager = dataGridManager;
             _exportSettings = exportSettings;
             _services = services;
-
-            _loadingState.PropertyChanged += (s, e) =>
-            {
-                if (e.PropertyName == nameof(LoadingState.IsLoading))
-                {
-                    (GetNextPage as RelayCommand)?.RaiseCanExecuteChanged();
-                    (GetPreviosPage as RelayCommand)?.RaiseCanExecuteChanged();
-                    (ShowExportForm as RelayCommand)?.RaiseCanExecuteChanged();
-                    (ExitApp as RelayCommand)?.RaiseCanExecuteChanged();
-                }
-            };
-            _exportSettings.PropertyChanged += (s, e) =>
-            {
-                if (e.PropertyName == nameof(ExportSettings.IsExporting))
-                {
-                    (GetNextPage as RelayCommand)?.RaiseCanExecuteChanged();
-                    (GetPreviosPage as RelayCommand)?.RaiseCanExecuteChanged();
-                    (ShowExportForm as RelayCommand)?.RaiseCanExecuteChanged();
-                    (ExitApp as RelayCommand)?.RaiseCanExecuteChanged();
-                }
-            };
         }
 
         private void Exit() => Application.Current.Shutdown();
@@ -84,11 +63,18 @@ namespace WPF_Starter.ViewModels.Commands
             ExportWindowInitialization exportInit = _services.GetRequiredService<ExportWindowInitialization>();
             Export? exportWindow = exportInit.Init();
             exportWindow.Show();
-
         }
-        private bool CanShowExportForm() => !_loadingState.IsLoading;
-        private bool CanExit() => !_loadingState.IsLoading && !_exportSettings.IsExporting;
-        private bool CanSetNextPage() => !_loadingState.IsLoading && !_exportSettings.IsExporting;
-        private bool CanSetPreviosPage() => !_loadingState.IsLoading && !_exportSettings.IsExporting;
+
+        private void ShowSettingsWindowExecute()
+        {
+            SettingsWindowInitialization settingsInit = _services.GetRequiredService<SettingsWindowInitialization>();
+            SettingsWindow settingsWindow = settingsInit.Init();
+            settingsWindow.Show();
+        }
+        private bool CanShowExportForm() => !_exportSettings.IsExporting;
+        private bool CanShowSettingsWindow() => !_exportSettings.IsExporting;
+        private bool CanExit() => true;
+        private bool CanSetNextPage() => !_exportSettings.IsExporting;
+        private bool CanSetPreviosPage() => !_exportSettings.IsExporting;
     }
 }

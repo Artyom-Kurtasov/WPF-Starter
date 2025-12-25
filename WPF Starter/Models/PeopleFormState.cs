@@ -1,77 +1,73 @@
-﻿using System.ComponentModel;
-using System.Runtime.CompilerServices;
+﻿    using WPF_Starter.Services;
 
-namespace WPF_Starter.Models
-{
-    public class PeopleFormState : INotifyPropertyChanged
+    namespace WPF_Starter.Models
     {
-        public event PropertyChangedEventHandler? PropertyChanged;
-        public void OnPropertyChanged([CallerMemberName] string? propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        
-        private DateTime? _dateBoxText;
-        public DateTime? DateOfDatepicker
+        public class PeopleFormState : PropertyChangedEvent
         {
-            get => _dateBoxText;
-            set
+            private DateTime? _dateBoxText;
+            public DateTime? DateOfDatepicker
             {
-                _dateBoxText = value;
-                OnPropertyChanged();
+                get => _dateBoxText;
+                set
+                {
+                    _dateBoxText = value;
+                    OnPropertyChanged(nameof(DateOfDatepicker));
+                }
             }
-        }
 
-        private string? _nameBoxText;
-        public string? NameBoxText
-        {
-            get => _nameBoxText;
-            set
+            private string? _nameBoxText;
+            public string? NameBoxText
             {
-                _nameBoxText = value;
-                OnPropertyChanged();
+                get => _nameBoxText;
+                set
+                {
+                    _nameBoxText = value;
+                    OnPropertyChanged(nameof(NameBoxText));
+                }
             }
-        }
 
-        private string? _surnameBoxText;
-        public string? SurnameBoxText
-        {
-            get => _surnameBoxText;
-            set
+            private string? _surnameBoxText;
+            public string? SurnameBoxText
             {
-                _surnameBoxText = value;
-                OnPropertyChanged();
+                get => _surnameBoxText;
+                set
+                {
+                    _surnameBoxText = value;
+                    OnPropertyChanged(nameof(SurnameBoxText));
+                }
             }
-        }
 
-        private string? _patronymicBoxText;
-        public string? PatronymicBoxText
-        {
-            get => _patronymicBoxText;
-            set
+            private string? _patronymicBoxText;
+            public string? PatronymicBoxText
             {
-                _patronymicBoxText = value;
-                OnPropertyChanged();
+                get => _patronymicBoxText;
+                set
+                {
+                    _patronymicBoxText = value;
+                    OnPropertyChanged(nameof(PatronymicBoxText));
+                }
             }
-        }
 
-        private string? _cityBoxText;
-        public string? CityBoxText
-        {
-            get => _cityBoxText;
-            set
+            private string? _cityBoxText;
+            public string? CityBoxText
             {
-                _cityBoxText = value;
-                OnPropertyChanged();
+                get => _cityBoxText;
+                set
+                {
+                    _cityBoxText = value;
+                    OnPropertyChanged(nameof(CityBoxText));
+                }
             }
-        }
 
-        private string? _countryBoxText;
-        public string? CountryBoxText
-        {
-            get => _countryBoxText;
-            set
+            private string? _countryBoxText;
+            public string? CountryBoxText
             {
-                _countryBoxText = value;
-                OnPropertyChanged();
+                get => _countryBoxText;
+                set
+                {
+                    _countryBoxText = value;
+                    OnPropertyChanged(nameof(CountryBoxText));
+                }
             }
         }
     }
-}

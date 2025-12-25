@@ -5,11 +5,11 @@ namespace WPF_Starter.Services.FileServices
 {
     public class CsvFileReader
     {
-        public async IAsyncEnumerable<List<string?>> ReadLines(string filePath, int blockSize)
+        public async IAsyncEnumerable<List<string?>> ReadLines(string filePath, int blockSize, int sizeOfBuffer)
         {
             List<string?> currentBlock = new List<string?>(blockSize);
 
-            using StreamReader reader = new StreamReader(filePath, Encoding.UTF8, detectEncodingFromByteOrderMarks: true, bufferSize: 65536);
+            using StreamReader reader = new StreamReader(filePath, Encoding.UTF8, detectEncodingFromByteOrderMarks: true, bufferSize: sizeOfBuffer);
             while (true)
             {
                 string? line = await reader.ReadLineAsync();

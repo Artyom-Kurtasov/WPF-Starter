@@ -1,8 +1,6 @@
 ﻿using WPF_Starter.Services.MessageServices.Interfaces;
-using System.Windows;
 using WPF_Starter.Services.Import.Interfaces;
 using WPF_Starter.Services.Export.Interfaces;
-using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 
 namespace WPF_Starter.Services.Notifiers
@@ -26,30 +24,31 @@ namespace WPF_Starter.Services.Notifiers
             _exportToExcel.InvalidPath += OnInvalidPath;
 
 
-            _importCsv.ImportCsvFailed += OnErrorOccurred;
-            _exportToExcel.ExportFailed += OnErrorOccurred;
-            _exportToXml.ExportFailed += OnErrorOccurred;
+
+            _importCsv.ImportCsvFailed += OnUnexpectedErrorOccurred;
+            _exportToExcel.ExportFailed += OnUnexpectedErrorOccurred;
+            _exportToXml.ExportFailed += OnUnexpectedErrorOccurred;
         }
 
         private void OnInvalidPath(object? sender, EventArgs e)
         {
-            _messageBoxService.ShowMessage("Error",
+            _messageBoxService.ShowMessageAsync("Error",
                 "No path has been selected.",
                 MessageDialogStyle.Affirmative);
         }
 
-        public void OnErrorOccurred(object? sender, EventArgs e)
+        public void OnUnexpectedErrorOccurred(object? sender, EventArgs e)
         {
-            _messageBoxService.ShowMessage("Error",
-                "Something went wrong. Please try again.",
+            _messageBoxService.ShowMessageAsync("Error",
+                "Something went wrong. More information in log file",
                 MessageDialogStyle.Affirmative);
         }
 
-        public void OnFileNotFound(object? sender, EventArgs e)
+        public async void OnFileNotFoundAsync(object? sender, EventArgs e)
         {
-            _messageBoxService.ShowMessage(
+            await _messageBoxService.ShowMessageAsync(
                                 "Error",
-                "File not found. You can import it through the application.",
+                "Csv file not found. You can import it through the application.",
                 MessageDialogStyle.Affirmative);
         }
     }

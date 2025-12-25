@@ -12,10 +12,13 @@ namespace WPF_Starter.Services.FileServices
     /// </summary>
     public class FillWorksheet
     {
-        public void Fill(AppDbContext dataBase, ExportSettings exportSettings, Search search, Paginator paginator, PagingSettings pagingSettings)
+        public async Task Fill(AppDbContext dataBase, ExportSettings exportSettings, Search search, Paginator paginator, PagingSettings pagingSettings,
+            Action<long>? progressAction = null)
         {
             using (XLWorkbook? workbook = new XLWorkbook())
             {
+                workbook.CalculateMode = XLCalculateMode.Manual;
+                int processed = 0;
                 int row = 2;
                 int sheetIndex = 1;
                 IXLWorksheet? worksheet = workbook.Worksheets.Add($"Data{sheetIndex}");
@@ -41,8 +44,21 @@ namespace WPF_Starter.Services.FileServices
                             WriteHeaders(worksheet);
                             row = 2;
                         }
+
+                        processed++;
+                        if (processed % 100 == 0)
+                        {
+                            progressAction?.Invoke(processed);
+                        }
                     }
                 }
+                foreach (var ws in workbook.Worksheets)
+                {
+                    var dataRange = ws.RangeUsed();
+                    ws.Column(1).Style.DateFormat.Format = "dd.MM.yyyy";
+                    ws.Columns().AdjustToContents();
+                }
+
                 workbook.SaveAs(exportSettings.ExcelFileName);
             }
         }
@@ -56,9 +72,6 @@ namespace WPF_Starter.Services.FileServices
             worksheet.Cell(1, 4).Value = "Patronymic";
             worksheet.Cell(1, 5).Value = "City";
             worksheet.Cell(1, 6).Value = "Country";
-
-            worksheet.Columns().Width = 15;
-            worksheet.Rows().Height = 20;
         }
     }
 }
