@@ -5,6 +5,9 @@
         event EventHandler? ExportCompleted;
         event EventHandler? ExportFailed;
         event EventHandler? InvalidPath;
+        event EventHandler? InvalidConnectionString;
+
+
         Task Export();
     }
 }

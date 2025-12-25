@@ -9,6 +9,10 @@ namespace WPF_Starter.Services.Logging
     {
         private readonly string _filePath = "log.txt";
 
+        public FileLogger()
+        {
+            File.WriteAllText(_filePath, string.Empty);
+        }
         public IDisposable? BeginScope<TState>(TState state) => null;
 
         public bool IsEnabled(LogLevel logLevel)

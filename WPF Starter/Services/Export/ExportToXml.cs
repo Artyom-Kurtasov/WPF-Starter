@@ -15,6 +15,7 @@ namespace WPF_Starter.Services.Export
         public event EventHandler? ExportCompleted;
         public event EventHandler? ExportFailed;
         public event EventHandler? InvalidPath;
+        public event EventHandler? InvalidConnectionString;
 
         private readonly FileLogger _fileLogger;
         private readonly PagingSettings _pagingSettings;
@@ -67,9 +68,19 @@ namespace WPF_Starter.Services.Export
                         count => controller.SetMessage($"Processed {count:N0} rows")));
                     ExportCompleted?.Invoke(this, EventArgs.Empty);
                 }
+                catch (InvalidOperationException ex)
+                {
+                    _fileLogger.LogError($"{ex}\n");
+                    InvalidConnectionString?.Invoke(this, EventArgs.Empty);
+                }
+                catch (ArgumentException ex)
+                {
+                    _fileLogger.LogError($"{ex}\n");
+                    InvalidConnectionString?.Invoke(this, EventArgs.Empty);
+                }
                 catch (Exception ex)
                 {
-                    _fileLogger.LogError(ex.Message);
+                    _fileLogger.LogError($"{ex}\n");
                     ExportFailed?.Invoke(this, EventArgs.Empty);
                 }
                 finally

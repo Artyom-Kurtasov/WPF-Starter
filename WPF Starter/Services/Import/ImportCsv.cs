@@ -15,6 +15,7 @@ namespace WPF_Starter.Services.Import
         public event EventHandler? InvalidPath;
         public event EventHandler? ImportCsvFailed;
         public event EventHandler? ImportCompleted;
+        public event EventHandler? InvalidConnectionString;
 
         private readonly FileLogger _fileLogger;
         private readonly AppDbContext _appDbContext;
@@ -53,14 +54,24 @@ namespace WPF_Starter.Services.Import
                     await _startupDataLoader.InitializeAsync(_exportSettings.CsvFilePath, _appDbContext, count => controller.SetMessage($"Processed {count:N0} rows"));
                     ImportCompleted?.Invoke(this, EventArgs.Empty);
                 }
+                catch (InvalidOperationException ex)
+                {
+                    _fileLogger.LogError($"{ex}\n");
+                    InvalidConnectionString?.Invoke(this, EventArgs.Empty);
+                }
+                catch (ArgumentException ex)
+                {
+                    _fileLogger.LogError($"{ex}\n");
+                    InvalidConnectionString?.Invoke(this, EventArgs.Empty);
+                }
                 catch (DbUpdateException ex)
                 {
-                    _fileLogger.LogError(ex.InnerException?.Message);
+                    _fileLogger.LogError($"{ex}\n");
                     ImportCsvFailed?.Invoke(this, EventArgs.Empty);
                 }
                 catch (Exception ex)
                 {
-                    _fileLogger.LogError(ex.Message);
+                    _fileLogger.LogError($"{ex}\n");
                     ImportCsvFailed?.Invoke(this, EventArgs.Empty);
                 }
             }, false);

@@ -29,6 +29,7 @@ namespace WPF_Starter.ViewModels
         public event EventHandler? SqlConnecctionFailed;
         public event EventHandler? DatabaseLoaded;
         public event EventHandler? FileNotFound;
+        public event EventHandler? InvalidConnectionString;
 
         public NavigationCommands NavigationCommands { get; }
         public PagingSettings PagingSettings { get; }
@@ -63,27 +64,37 @@ namespace WPF_Starter.ViewModels
             }
             catch (FileNotFoundException ex)
             {
-                _fileLogger.LogError(ex.Message);
+                _fileLogger.LogError($"{ex}\n");
                 FileNotFound?.Invoke(this, EventArgs.Empty);
             }
             catch (SqlServerConnectionException ex)
             {
-                _fileLogger.LogError(ex.Message);
+                _fileLogger.LogError($"{ex}\n");
                 SqlConnecctionFailed?.Invoke(this, EventArgs.Empty);
             }
             catch (DataBaseNotFoundException ex)
             {
-                _fileLogger.LogError(ex.Message);
+                _fileLogger.LogError($"{ex}\n");
                 DatabaseNotFound?.Invoke(this, EventArgs.Empty);
             }
             catch (TableNotFoundException ex)
             {
-                _fileLogger.LogError(ex.Message);
+                _fileLogger.LogError($"{ex}\n");
                 TableNotFound?.Invoke(this, EventArgs.Empty);
+            }
+            catch (InvalidOperationException ex)
+            {
+                _fileLogger.LogError($"{ex}\n");
+                InvalidConnectionString?.Invoke(this, EventArgs.Empty);
+            }
+            catch (ArgumentException ex)
+            {
+                _fileLogger.LogError($"{ex}\n");
+                InvalidConnectionString?.Invoke(this, EventArgs.Empty);
             }
             catch (Exception ex)
             {
-                _fileLogger.LogError(ex.Message);
+                _fileLogger.LogError($"{ex}\n");
                 UnexpectedError?.Invoke(this, EventArgs.Empty);
             }
             }, false);
@@ -91,6 +102,7 @@ namespace WPF_Starter.ViewModels
 
         private void Subscribe()
         {
+            InvalidConnectionString += _errorNotifier.OnInvalidConnectionStringAsync;
             UnexpectedError += _errorNotifier.OnUnexpectedErrorOccurred;
             TableNotFound += _databaseNotifier.OnTableNotFoundAsync;
             DatabaseNotFound += _databaseNotifier.OnDatabaseNotFoundAsync;

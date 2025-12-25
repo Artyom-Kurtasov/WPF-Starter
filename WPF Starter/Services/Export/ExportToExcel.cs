@@ -15,6 +15,7 @@ namespace WPF_Starter.Services.Export
         public event EventHandler? ExportCompleted;
         public event EventHandler? ExportFailed;
         public event EventHandler? InvalidPath;
+        public event EventHandler? InvalidConnectionString;
 
         private readonly FileLogger _fileLogger;
         private readonly IMessageBoxService _messageBoxService;
@@ -26,8 +27,17 @@ namespace WPF_Starter.Services.Export
         private readonly ExportSettings _exportSettings;
         private readonly InitializeExcelFile _initializeExcelFile;
         private readonly IFileDialogService _fileDialogServices;
-        public ExportToExcel(IFileDialogService fileDialogServices, InitializeExcelFile initializeExcelFile, ExportSettings exportSettings,
-            FillWorksheet worksheet, AppDbContext dataBase, Search search, Paginator paginator, PagingSettings pagingSettings, IMessageBoxService messageBoxService,
+
+        public ExportToExcel(
+            IFileDialogService fileDialogServices,
+            InitializeExcelFile initializeExcelFile,
+            ExportSettings exportSettings,
+            FillWorksheet worksheet,
+            AppDbContext dataBase,
+            Search search,
+            Paginator paginator,
+            PagingSettings pagingSettings,
+            IMessageBoxService messageBoxService,
             FileLogger fileLogger)
         {
             _fileDialogServices = fileDialogServices;
@@ -39,37 +49,55 @@ namespace WPF_Starter.Services.Export
             _paginator = paginator;
             _pagingSettings = pagingSettings;
             _messageBoxService = messageBoxService;
+            _fileLogger = fileLogger;
         }
 
         /// <summary>
-        ///  Manages export state, create a excel file
-        ///  initializes and fills the file with data
+        /// Manages export state, create a excel file
+        /// initializes and fills the file with data
         /// </summary>
         public async Task Export()
         {
-            await _messageBoxService.ShowProgressAsync("Export to Excel", "Exporting data, please wait...", async controller =>
+
+            await _messageBoxService.ShowProgressAsync(
+                "Export to Excel",
+                "Exporting data, please wait...",
+                async controller =>
                 {
                     try
                     {
                         _exportSettings.IsExporting = true;
+
                         var fileName = _fileDialogServices.CreateFile("Excel Files|*.xlsx", "Choose Excel file");
                         if (string.IsNullOrEmpty(fileName))
                         {
                             InvalidPath?.Invoke(this, EventArgs.Empty);
                             return;
                         }
-                        
+
                         _exportSettings.ExcelFileName = fileName;
                         _initializeExcelFile.InitializeFile(fileName);
 
-                        await Task.Run(() => _worksheet.Fill(_dataBase, _exportSettings, _search, _paginator, _pagingSettings,
-                            count => controller.SetMessage($"Processed {count:N0} rows")));
+                        await Task.Run(() => _worksheet.Fill(_dataBase, _exportSettings, _search,
+                                _paginator, _pagingSettings,
+                                count => controller.SetMessage($"Processed {count:N0} rows"))
+                        );
 
                         ExportCompleted?.Invoke(this, EventArgs.Empty);
                     }
+                    catch (InvalidOperationException ex)
+                    {
+                        _fileLogger.LogError($"{ex}\n");
+                        InvalidConnectionString?.Invoke(this, EventArgs.Empty);
+                    }
+                    catch (ArgumentException ex)
+                    {
+                        _fileLogger.LogError($"{ex}\n");
+                        InvalidConnectionString?.Invoke(this, EventArgs.Empty);
+                    }
                     catch (Exception ex)
                     {
-                        _fileLogger.LogError(ex.Message);
+                        _fileLogger.LogError($"{ex}\n");
                         ExportFailed?.Invoke(this, EventArgs.Empty);
                     }
                     finally

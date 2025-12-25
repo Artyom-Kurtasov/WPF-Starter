@@ -1,7 +1,8 @@
-﻿using WPF_Starter.Services.MessageServices.Interfaces;
-using WPF_Starter.Services.Import.Interfaces;
+﻿using MahApps.Metro.Controls.Dialogs;
 using WPF_Starter.Services.Export.Interfaces;
-using MahApps.Metro.Controls.Dialogs;
+using WPF_Starter.Services.Import.Interfaces;
+using WPF_Starter.Services.MessageServices;
+using WPF_Starter.Services.MessageServices.Interfaces;
 
 namespace WPF_Starter.Services.Notifiers
 {
@@ -19,15 +20,18 @@ namespace WPF_Starter.Services.Notifiers
             _exportToXml = exportToXml;
             _exportToExcel = exportToExcel;
 
-            _importCsv.InvalidPath += OnInvalidPath;
+            _exportToXml.ExportFailed += OnUnexpectedErrorOccurred;
             _exportToXml.InvalidPath += OnInvalidPath;
+            _exportToXml.InvalidConnectionString += OnInvalidConnectionStringAsync;
+
+            _exportToExcel.ExportFailed += OnUnexpectedErrorOccurred;
+            _exportToExcel.InvalidConnectionString += OnInvalidConnectionStringAsync;
             _exportToExcel.InvalidPath += OnInvalidPath;
 
-
-
+            _importCsv.InvalidConnectionString += OnInvalidConnectionStringAsync;
             _importCsv.ImportCsvFailed += OnUnexpectedErrorOccurred;
-            _exportToExcel.ExportFailed += OnUnexpectedErrorOccurred;
-            _exportToXml.ExportFailed += OnUnexpectedErrorOccurred;
+            _importCsv.InvalidPath += OnInvalidPath;
+
         }
 
         private void OnInvalidPath(object? sender, EventArgs e)
@@ -46,9 +50,15 @@ namespace WPF_Starter.Services.Notifiers
 
         public async void OnFileNotFoundAsync(object? sender, EventArgs e)
         {
-            await _messageBoxService.ShowMessageAsync(
-                                "Error",
+            await _messageBoxService.ShowMessageAsync("Error",
                 "Csv file not found. You can import it through the application.",
+                MessageDialogStyle.Affirmative);
+        }
+
+        public async void OnInvalidConnectionStringAsync(object? sender, EventArgs e)
+        {
+            await _messageBoxService.ShowMessageAsync("Error",
+                "Connection string is invalid. Change it in settings.",
                 MessageDialogStyle.Affirmative);
         }
     }
