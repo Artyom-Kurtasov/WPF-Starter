@@ -51,7 +51,8 @@ namespace WPF_Starter.Services.Import
                         InvalidPath?.Invoke(this, EventArgs.Empty);
                         return;
                     }
-                    await _startupDataLoader.InitializeAsync(_exportSettings.CsvFilePath, _appDbContext, count => controller.SetMessage($"Processed {count:N0} rows"));
+                    await _startupDataLoader.InitializeAsync(_exportSettings.CsvFilePath, _appDbContext, count => controller.SetMessage($"Reading file and loading data into database, please wait..." +
+                        $"\n\nProcessed {count:N0} rows"));
                     ImportCompleted?.Invoke(this, EventArgs.Empty);
                 }
                 catch (InvalidOperationException ex)

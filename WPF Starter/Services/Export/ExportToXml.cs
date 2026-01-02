@@ -65,7 +65,7 @@ namespace WPF_Starter.Services.Export
 
                     _initializeXmlFile.InitializeFile(_exportSettings.XmlFileName);
                     await Task.Run(() => _createRootElement.Fill(_dataBase, _exportSettings, _search, _paginator, _pagingSettings,
-                        count => controller.SetMessage($"Processed {count:N0} rows")));
+                        count => controller.SetMessage($"Exporting data, please wait... \n\nProcessed {count:N0} rows")));
                     ExportCompleted?.Invoke(this, EventArgs.Empty);
                 }
                 catch (InvalidOperationException ex)
