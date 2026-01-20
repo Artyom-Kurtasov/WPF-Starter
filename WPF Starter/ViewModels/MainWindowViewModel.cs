@@ -13,7 +13,7 @@ using WPF_Starter.ViewModels.Commands;
 
 namespace WPF_Starter.ViewModels
 {
-    public class MainWindowViewModel : INotifyPropertyChanged, IDisposable
+    public class MainWindowViewModel : INotifyPropertyChanged
     {
         private readonly DatabaseNotifier _databaseNotifier;
         private readonly ErrorNotifier _errorNotifier;
@@ -31,8 +31,6 @@ namespace WPF_Starter.ViewModels
         public event EventHandler? DatabaseLoaded;
         public event EventHandler? FileNotFound;
         public event EventHandler? InvalidConnectionString;
-
-        private bool _isDisposed = false;
         public NavigationCommands NavigationCommands { get; }
         public PagingSettings PagingSettings { get; }
         public ImportCommands ImportCommands { get; }
@@ -113,22 +111,6 @@ namespace WPF_Starter.ViewModels
             DatabaseNotFound += _databaseNotifier.OnDatabaseNotFoundAsync;
             SqlConnecctionFailed += _databaseNotifier.OnSqlServerConnectionFailedAsync;
             DatabaseLoaded += _databaseNotifier.OnDatabaseLoadedAsync;
-        }
-
-        public void Dispose()
-        {
-            if (_isDisposed) return;
-
-            _isDisposed = true;
-
-            UnexpectedError -= _errorNotifier.OnUnexpectedErrorOccurred;
-            InvalidConnectionString -= _errorNotifier.OnInvalidConnectionStringAsync;
-            FileNotFound -= _errorNotifier.OnFileNotFoundAsync;
-
-            TableNotFound -= _databaseNotifier.OnTableNotFoundAsync;
-            DatabaseNotFound -= _databaseNotifier.OnDatabaseNotFoundAsync;
-            SqlConnecctionFailed -= _databaseNotifier.OnSqlServerConnectionFailedAsync;
-            DatabaseLoaded -= _databaseNotifier.OnDatabaseLoadedAsync;
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

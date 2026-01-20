@@ -57,7 +57,7 @@ namespace WPF_Starter.Config
             services.AddSingleton<SettingsWindowInitialization>();
 
             //Commands
-            services.AddTransient<SettingCommands>();
+            services.AddSingleton<SettingCommands>();
             services.AddTransient<ExportCommands>();
             services.AddTransient<ImportCommands>();
             services.AddTransient<NavigationCommands>();
