@@ -23,7 +23,7 @@ namespace WPF_Starter.Config
         /// saves data to the database, refreshes the DataGrid
         /// and manages loading state
         /// </summary>
-        public async Task InitializeAsync(string filePath, AppDbContext appDbContext, Action<long> progressAction)
+        public async Task InitializeAsync(string filePath, AppDbContext appDbContext, Action<double>? progressAction)
         {
             try
             {

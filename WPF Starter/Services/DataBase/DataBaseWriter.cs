@@ -26,7 +26,7 @@ namespace WPF_Starter.Services.DataBase
         /// parses a csv file
         /// add and save changes to the database
         /// </summary>
-        public async Task SaveAsync(AppDbContext dataBase, Action<long> progressAction)
+        public async Task SaveAsync(AppDbContext dataBase, Action<double> progressAction)
         {
            ClearDataBase(dataBase);
 
@@ -36,6 +36,8 @@ namespace WPF_Starter.Services.DataBase
                 await dataBase.SaveChangesAsync();
                 dataBase.ChangeTracker.Clear();
             }
+
+            _exportSettings.PercentOfRows = dataBase.Person.Count();
         }
     }
 }

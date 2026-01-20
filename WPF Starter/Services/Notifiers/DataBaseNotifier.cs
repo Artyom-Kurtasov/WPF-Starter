@@ -7,13 +7,14 @@ using WPF_Starter.ViewModels.Commands;
 
 namespace WPF_Starter.Services.Notifiers
 {
-    public class DatabaseNotifier
+    public class DatabaseNotifier : IDisposable
     {
         private readonly DatabaseCreator _databaseCreator;
         private ConnectionStringValidator _con;
         private readonly IMessageBoxService _messageBoxService;
         private readonly SettingCommands _settingCommands;
 
+        private bool _isDisposed = false;
         private readonly string? _defaultConnectionString;
         public DatabaseNotifier(IMessageBoxService messageBoxService, SettingCommands settingCommands, ConnectionStringValidator connectionStringValidator,
             DatabaseCreator databaseCreator)
@@ -131,6 +132,16 @@ namespace WPF_Starter.Services.Notifiers
                         MessageDialogStyle.Affirmative);
                 }
             }
+        }
+
+        public void Dispose()
+        {
+            if (_isDisposed) return;
+
+            _isDisposed = true;
+
+            _settingCommands.ConnectionEstablishedAsync -= OnTestConnectionAsync;
+            _settingCommands.ConnectionFailedAsync -= OnTestConnectionFailedAsync;
         }
     }
 }

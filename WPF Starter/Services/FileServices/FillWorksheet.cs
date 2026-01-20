@@ -12,19 +12,26 @@ namespace WPF_Starter.Services.FileServices
     /// </summary>
     public class FillWorksheet
     {
-        public async Task Fill(AppDbContext dataBase, ExportSettings exportSettings, Search search, Paginator paginator, PagingSettings pagingSettings,
-            Action<long>? progressAction = null)
+        public async Task Fill(AppDbContext dataBase, ExportSettings exportSettings, Search search,
+            Paginator paginator, PagingSettings pagingSettings, Action<double>? progressAction = null)
         {
             using (XLWorkbook? workbook = new XLWorkbook())
             {
+                IQueryable<People> query = search.SearchPeople(dataBase);
+
                 workbook.CalculateMode = XLCalculateMode.Manual;
-                int processed = 0;
                 int row = 2;
                 int sheetIndex = 1;
                 IXLWorksheet? worksheet = workbook.Worksheets.Add($"Data{sheetIndex}");
                 WriteHeaders(worksheet);
 
-                foreach (List<People>? batch in paginator.Pagenation(dataBase, pagingSettings, search.SearchPeople(dataBase)))
+                Progress<double> progress = new Progress<double>();
+                progress.ProgressChanged += (sender, percentage) =>
+                {
+                    progressAction?.Invoke(percentage);
+                };
+
+                foreach (List<People>? batch in paginator.Pagenation(dataBase, pagingSettings, query, progress))
                 {
                     foreach (People? item in batch)
                     {
@@ -44,17 +51,10 @@ namespace WPF_Starter.Services.FileServices
                             WriteHeaders(worksheet);
                             row = 2;
                         }
-
-                        processed++;
-                        if (processed % 100 == 0)
-                        {
-                            progressAction?.Invoke(processed);
-                        }
                     }
                 }
                 foreach (var ws in workbook.Worksheets)
                 {
-                    var dataRange = ws.RangeUsed();
                     ws.Column(1).Style.DateFormat.Format = "dd.MM.yyyy";
                     ws.Columns().AdjustToContents();
                 }
@@ -65,7 +65,6 @@ namespace WPF_Starter.Services.FileServices
 
         private void WriteHeaders(IXLWorksheet worksheet)
         {
-
             worksheet.Cell(1, 1).Value = "Date";
             worksheet.Cell(1, 2).Value = "Name";
             worksheet.Cell(1, 3).Value = "Surname";

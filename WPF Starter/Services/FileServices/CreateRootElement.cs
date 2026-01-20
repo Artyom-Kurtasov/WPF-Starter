@@ -13,14 +13,22 @@ namespace WPF_Starter.Services.FileServices
         /// add data to the file and saves changes
         /// </summary>
         public void Fill(AppDbContext dataBase, ExportSettings exportSettings, Search search, Paginator paginator, PagingSettings pagingSettings,
-            Action<long> progressAction)
+            Action<double>? progressAction = null)
         {
             XDocument doc = new XDocument(new XElement("TestProgram"));
 
             int processed = 0;
             int idCounter = 1;
 
-            foreach (List<People> batch in paginator.Pagenation(dataBase, pagingSettings, search.SearchPeople(dataBase)))
+            var query = search.SearchPeople(dataBase);
+
+            var progress = new Progress<double>();
+            progress.ProgressChanged += (sender, percentage) =>
+            {
+                progressAction?.Invoke(percentage);
+            };
+
+            foreach (List<People> batch in paginator.Pagenation(dataBase, pagingSettings, query, progress))
             {
                 foreach (People person in batch)
                 {
@@ -35,10 +43,6 @@ namespace WPF_Starter.Services.FileServices
                     );
 
                     doc.Root.Add(recordElement);
-
-                    processed++;
-                    if (processed % 100 == 0)
-                        progressAction?.Invoke(processed);
                 }
             }
 

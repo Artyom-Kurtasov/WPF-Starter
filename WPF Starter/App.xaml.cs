@@ -3,7 +3,6 @@ using System.Globalization;
 using System.Windows;
 using WPF_Starter.Config;
 using WPF_Starter.Config.Initialization;
-using WPF_Starter.Services.MessageServices.Interfaces;
 
 namespace WPF_Starter
 {
@@ -43,6 +42,11 @@ namespace WPF_Starter
 
         protected override void OnExit(ExitEventArgs e)
         {
+            if (ServiceProvider is IDisposable disposable)
+            {
+                disposable.Dispose();
+            }
+            
             base.OnExit(e);
             Current.Shutdown();
         }

@@ -4,11 +4,11 @@ using WPF_Starter.Services.MessageServices.Interfaces;
 
 namespace WPF_Starter.Services.Notifiers
 {
-    public class ImportNotifier
+    public class ImportNotifier : IDisposable
     {
         private readonly IMessageBoxService _messageBoxService;
         private readonly IImportCsv _importCsv;
-
+        private bool _isDisposed = false;
         public ImportNotifier(IMessageBoxService messageBoxService, IImportCsv importCsv)
         {
             _importCsv = importCsv;
@@ -22,6 +22,15 @@ namespace WPF_Starter.Services.Notifiers
             _messageBoxService.ShowMessageAsync("Success", 
                "Import has been completed.",
                MessageDialogStyle.Affirmative);
+        }
+
+        public void Dispose()
+        {
+            if (_isDisposed) return;
+
+            _isDisposed = true;
+
+            _importCsv.ImportCompleted -= OnImportCompleted;
         }
     }
 }

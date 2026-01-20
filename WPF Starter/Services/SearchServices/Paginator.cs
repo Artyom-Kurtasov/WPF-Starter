@@ -10,9 +10,13 @@ namespace WPF_Starter.Services.SearchServices
         /// <summary>
         /// Splits People records in pages
         /// </summary>
-        public IEnumerable<List<People>> Pagenation(AppDbContext dataBase, PagingSettings pagingSettings, IQueryable<People> query)
+        public IEnumerable<List<People>> Pagenation(AppDbContext dataBase, PagingSettings pagingSettings, IQueryable<People> query,
+            IProgress<double>? progress = null)
         {
             pagingSettings.Page = 0;
+
+            int totalCount = query.Count();
+            int processed = 0;
 
             while (true)
             {
@@ -25,6 +29,13 @@ namespace WPF_Starter.Services.SearchServices
                 if (!batch.Any()) yield break;
 
                 pagingSettings.Page++;
+                processed += batch.Count;
+
+                if (progress != null && totalCount > 0)
+                {
+                    double percentage = (double)processed / totalCount;
+                    progress.Report(percentage);
+                }
 
                 yield return batch;
             }

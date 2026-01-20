@@ -1,9 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using WPF_Starter.Models;
-using WPF_Starter.Services.DataGridServices;
 using WPF_Starter.View;
 using WPF_Starter.ViewModels;
-using WPF_Starter.ViewModels.Commands;
 
 namespace WPF_Starter.Config.Initialization
 {

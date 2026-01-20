@@ -1,15 +1,27 @@
 ﻿using WPF_Starter.Config.Settings;
 using WPF_Starter.Services;
+using WPF_Starter.Services.DataBase;
 
 namespace WPF_Starter.Models
 {
     public class ExportSettings : PropertyChangedEvent
     {
         private UserSettings? _userSettings;
-
         public ExportSettings(UserSettings? userSettings)
         {
             _userSettings = userSettings;
+        }
+
+        private const int _percentOfRowsCountMaximum = 100;
+        private double _percentOfRows;
+        public double PercentOfRows
+        {
+            get => _percentOfRows;
+            set
+            {
+                _percentOfRows = value / _percentOfRowsCountMaximum; 
+                OnPropertyChanged(nameof(PercentOfRows));
+            }
         }
 
         private string _bufferSize = UserSettings.Default.BufferSize.ToString();

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using WPF_Starter.Config;
 using WPF_Starter.Models;
@@ -12,7 +13,7 @@ using WPF_Starter.ViewModels.Commands;
 
 namespace WPF_Starter.ViewModels
 {
-    public class MainWindowViewModel : INotifyPropertyChanged
+    public class MainWindowViewModel : INotifyPropertyChanged, IDisposable
     {
         private readonly DatabaseNotifier _databaseNotifier;
         private readonly ErrorNotifier _errorNotifier;
@@ -31,6 +32,7 @@ namespace WPF_Starter.ViewModels
         public event EventHandler? FileNotFound;
         public event EventHandler? InvalidConnectionString;
 
+        private bool _isDisposed = false;
         public NavigationCommands NavigationCommands { get; }
         public PagingSettings PagingSettings { get; }
         public ImportCommands ImportCommands { get; }
@@ -59,7 +61,8 @@ namespace WPF_Starter.ViewModels
             try
             {
                     Subscribe();
-                    await _dataLoader.InitializeAsync(_exportSettings.CsvFilePath, _appDbContext, count => controller.SetMessage($"Processed {count:N0} rows"));
+                    await _dataLoader.InitializeAsync(_exportSettings.CsvFilePath, _appDbContext,
+                        count => controller.SetProgress(count));
                     DatabaseLoaded?.Invoke(this, EventArgs.Empty);
             }
             catch (FileNotFoundException ex)
@@ -104,11 +107,28 @@ namespace WPF_Starter.ViewModels
         {
             InvalidConnectionString += _errorNotifier.OnInvalidConnectionStringAsync;
             UnexpectedError += _errorNotifier.OnUnexpectedErrorOccurred;
+            FileNotFound += _errorNotifier.OnFileNotFoundAsync;
+
             TableNotFound += _databaseNotifier.OnTableNotFoundAsync;
             DatabaseNotFound += _databaseNotifier.OnDatabaseNotFoundAsync;
             SqlConnecctionFailed += _databaseNotifier.OnSqlServerConnectionFailedAsync;
             DatabaseLoaded += _databaseNotifier.OnDatabaseLoadedAsync;
-            FileNotFound += _errorNotifier.OnFileNotFoundAsync;
+        }
+
+        public void Dispose()
+        {
+            if (_isDisposed) return;
+
+            _isDisposed = true;
+
+            UnexpectedError -= _errorNotifier.OnUnexpectedErrorOccurred;
+            InvalidConnectionString -= _errorNotifier.OnInvalidConnectionStringAsync;
+            FileNotFound -= _errorNotifier.OnFileNotFoundAsync;
+
+            TableNotFound -= _databaseNotifier.OnTableNotFoundAsync;
+            DatabaseNotFound -= _databaseNotifier.OnDatabaseNotFoundAsync;
+            SqlConnecctionFailed -= _databaseNotifier.OnSqlServerConnectionFailedAsync;
+            DatabaseLoaded -= _databaseNotifier.OnDatabaseLoadedAsync;
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

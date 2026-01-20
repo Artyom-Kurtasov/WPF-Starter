@@ -32,7 +32,7 @@ namespace WPF_Starter.Config
         {
             //Data
             services.AddDbContext<AppDbContext>(options => 
-                options.UseSqlServer(UserSettings.Default.ConnectionString), ServiceLifetime.Scoped);
+                options.UseSqlServer(UserSettings.Default.ConnectionString), ServiceLifetime.Transient);
             services.AddSingleton<People>();
             services.AddSingleton<ExportSettings>();
             services.AddSingleton<PeopleFormState>();
@@ -47,9 +47,9 @@ namespace WPF_Starter.Config
             services.AddSingleton<ExportWindowViewModel>();
 
             //Windows
-            services.AddTransient<MainWindow>();
-            services.AddTransient<Export>();
-            services.AddTransient<SettingsWindow>();
+            services.AddSingleton<MainWindow>();
+            services.AddSingleton<Export>();
+            services.AddSingleton<SettingsWindow>();
 
             //Initialization
             services.AddTransient<MainWindowInitialization>();
@@ -57,14 +57,14 @@ namespace WPF_Starter.Config
             services.AddSingleton<SettingsWindowInitialization>();
 
             //Commands
-            services.AddSingleton<SettingCommands>();
+            services.AddTransient<SettingCommands>();
             services.AddTransient<ExportCommands>();
             services.AddTransient<ImportCommands>();
             services.AddTransient<NavigationCommands>();
             services.AddTransient<RelayCommand>();
             services.AddTransient<AsyncRelayCommand>();
 
-            //Services: Grid, Search, Dialogs
+            //Services
             services.AddSingleton<DataGridManager>();
             services.AddTransient<GridDataService>();
             services.AddTransient<Search>();
@@ -72,6 +72,8 @@ namespace WPF_Starter.Config
             services.AddTransient<IFileDialogService, FileDialogService>();
             services.AddSingleton<IMessageBoxService, MessageBoxService>();
             services.AddTransient<PropertyChangedEvent>();
+            services.AddSingleton<FileLogger>();
+            services.AddSingleton<Validator>();
 
             //Services: Import/Export
             services.AddSingleton<IImportCsv, ImportCsv>();
@@ -94,8 +96,6 @@ namespace WPF_Starter.Config
             services.AddSingleton<ExportNotifyer>();
             services.AddSingleton<ErrorNotifier>();
             services.AddSingleton<ImportNotifier>();
-            services.AddSingleton<FileLogger>();
-            services.AddSingleton<Validator>();
             services.AddSingleton<DatabaseNotifier>();
 
             //Startup
